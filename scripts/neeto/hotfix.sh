@@ -1,7 +1,7 @@
-# Creates a cherry-picked micro release from production and opens a PR
+# Creates a cherry-picked hotfix release from production and opens a PR
 hotfix() {
   REPO_NAME=$(basename $(pwd))
-  RELEASE_BRANCH=$(date "+release-%Y-%m-%d-micro")
+  RELEASE_BRANCH=$(date "+release-%Y-%m-%d-hotfix")
   BASE_BRANCH=production
   if [[ $REPO_NAME == *"widget"* ]] ;then
     BASE_BRANCH=stable
@@ -61,55 +61,55 @@ hotfix() {
     return 1
   fi
 
-  local micro_steps=(
+  local hotfix_steps=(
     "Switch to production branch"
     "Pull latest changes"
-    "Create micro release branch"
+    "Create hotfix release branch"
     "Cherry-pick commits"
     "Push release branch"
     "Create pull request"
     "Open pull request in browser"
   )
 
-  local pretext="Micro release: $REPO_NAME\nTarget branch: $BASE_BRANCH\nCherry-picked commits: ${commit_hashes[*]}"
-  show_progress "$pretext" 1 0 "${micro_steps[@]}"
+  local pretext="Hotfix release: $REPO_NAME\nTarget branch: $BASE_BRANCH\nCherry-picked commits: ${commit_hashes[*]}"
+  show_progress "$pretext" 1 0 "${hotfix_steps[@]}"
 
   if ! gco $BASE_BRANCH >/dev/null 2>&1; then
-    show_progress "$pretext" 1 1 "${micro_steps[@]}"
+    show_progress "$pretext" 1 1 "${hotfix_steps[@]}"
     echo "❌ Failed to switch to $BASE_BRANCH"
     return 1
   fi
-  show_progress "$pretext" 2 0 "${micro_steps[@]}"
+  show_progress "$pretext" 2 0 "${hotfix_steps[@]}"
 
   if ! gl >/dev/null 2>&1; then
-    show_progress "$pretext" 2 1 "${micro_steps[@]}"
+    show_progress "$pretext" 2 1 "${hotfix_steps[@]}"
     echo "❌ Failed to pull latest changes"
     return 1
   fi
-  show_progress "$pretext" 3 0 "${micro_steps[@]}"
+  show_progress "$pretext" 3 0 "${hotfix_steps[@]}"
 
   if ! gcb $RELEASE_BRANCH >/dev/null 2>&1 && ! gco $RELEASE_BRANCH >/dev/null 2>&1; then
-    show_progress "$pretext" 3 1 "${micro_steps[@]}"
+    show_progress "$pretext" 3 1 "${hotfix_steps[@]}"
     echo "❌ Failed to create/switch to release branch: $RELEASE_BRANCH"
     return 1
   fi
-  show_progress "$pretext" 4 0 "${micro_steps[@]}"
+  show_progress "$pretext" 4 0 "${hotfix_steps[@]}"
 
   for commit_hash in "${commit_hashes[@]}"; do
     if ! git cherry-pick -X theirs "$commit_hash" >/dev/null 2>&1; then
-      show_progress "$pretext" 4 1 "${micro_steps[@]}"
+      show_progress "$pretext" 4 1 "${hotfix_steps[@]}"
       echo "❌ Failed to cherry-pick $commit_hash"
       return 1
     fi
   done
-  show_progress "$pretext" 5 0 "${micro_steps[@]}"
+  show_progress "$pretext" 5 0 "${hotfix_steps[@]}"
 
   if ! ggp --no-verify >/dev/null 2>&1; then
-    show_progress "$pretext" 5 1 "${micro_steps[@]}"
+    show_progress "$pretext" 5 1 "${hotfix_steps[@]}"
     echo "❌ Failed to push release branch"
     return 1
   fi
-  show_progress "$pretext" 6 0 "${micro_steps[@]}"
+  show_progress "$pretext" 6 0 "${hotfix_steps[@]}"
 
   if gh pr list --head $RELEASE_BRANCH --base $BASE_BRANCH --json url --jq '.[0].url' 2>/dev/null | grep -q .; then
     echo "ℹ️  Pull request already exists for $RELEASE_BRANCH - skipping creation"
@@ -123,18 +123,18 @@ hotfix() {
       printf -v release_body "Cherry-picked changes:\n\n%s" "$release_commits"
     fi
 
-    if ! gh pr create --fill --base $BASE_BRANCH --title "$(date "+Release %Y-%m-%d Micro")" --body "$release_body" >/dev/null 2>&1; then
-      show_progress "$pretext" 6 1 "${micro_steps[@]}"
+    if ! gh pr create --fill --base $BASE_BRANCH --title "$(date "+Release %Y-%m-%d Hotfix")" --body "$release_body" >/dev/null 2>&1; then
+      show_progress "$pretext" 6 1 "${hotfix_steps[@]}"
       echo "❌ Failed to create pull request"
       return 1
     fi
   fi
-  show_progress "$pretext" 7 0 "${micro_steps[@]}"
+  show_progress "$pretext" 7 0 "${hotfix_steps[@]}"
 
   if ! gh pr view --web >/dev/null 2>&1; then
-    show_progress "$pretext" 7 1 "${micro_steps[@]}"
+    show_progress "$pretext" 7 1 "${hotfix_steps[@]}"
     echo "❌ Failed to open pull request in browser"
     return 1
   fi
-  show_progress "$pretext" 8 0 "${micro_steps[@]}"
+  show_progress "$pretext" 8 0 "${hotfix_steps[@]}"
 }
