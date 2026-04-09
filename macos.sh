@@ -16,10 +16,18 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 defaults write com.apple.finder ShowPathbar -bool true
 defaults write com.apple.finder ShowStatusBar -bool true
 
-# Dock: autohide, minimize to app, no recent apps
+# Dock: left side, autohide, minimize to app, no recent apps, curated apps only
+defaults write com.apple.dock orientation -string "left"
 defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock minimize-to-application -bool true
 defaults write com.apple.dock show-recents -bool false
+
+# Remove all apps from Dock, then add only Apps (Finder & Trash are always present)
+defaults write com.apple.dock persistent-apps -array \
+  "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>file:///System/Applications/Apps.app/</string><key>_CFURLStringType</key><integer>15</integer></dict><key>file-label</key><string>Apps</string><key>file-type</key><integer>41</integer></dict><key>tile-type</key><string>file-tile</string></dict>"
+# Add Downloads folder
+defaults write com.apple.dock persistent-others -array \
+  "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>file://${HOME}/Downloads/</string><key>_CFURLStringType</key><integer>15</integer></dict><key>file-label</key><string>Downloads</string><key>file-type</key><integer>2</integer><key>arrangement</key><integer>2</integer><key>displayas</key><integer>1</integer><key>showas</key><integer>0</integer></dict><key>tile-type</key><string>directory-tile</string></dict>"
 
 # Trackpad: tap to click
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
