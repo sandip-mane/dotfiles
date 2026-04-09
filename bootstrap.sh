@@ -102,6 +102,12 @@ if [ -x "$BREW_ZSH" ]; then
   fi
 fi
 
+# 11. Import Raycast config
+if [ -f "$DOTFILES/raycast/config.rayconfig" ]; then
+  echo "Opening Raycast config for import (confirm in the Raycast dialog)..."
+  open "$DOTFILES/raycast/config.rayconfig"
+fi
+
 echo ""
 echo "Bootstrap complete! Restart your terminal to apply all changes."
 echo ""

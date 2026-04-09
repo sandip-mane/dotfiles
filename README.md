@@ -91,8 +91,9 @@ These apps can't be installed via Homebrew or the Mac App Store:
 
 ## Raycast
 
-Raycast config uses encrypted storage. Use Raycast's built-in export/import feature:
-**Raycast → Settings → Advanced → Export/Import**
+Raycast config is stored at `raycast/config.rayconfig`. The bootstrap script opens it automatically — just confirm the import in the Raycast dialog.
+
+To update: **Raycast → Settings → Advanced → Export** (without encryption), then replace `raycast/config.rayconfig`.
 
 ## Secrets
 
