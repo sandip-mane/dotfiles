@@ -5,7 +5,7 @@ My macOS setup and dotfiles, managed with [GNU Stow](https://www.gnu.org/softwar
 ## Fresh Machine Install
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/sandip-mane/dotfiles/main/bootstrap.sh)
+curl -fsSL https://raw.githubusercontent.com/sandip-mane/dotfiles/main/bootstrap.sh -o /tmp/bootstrap.sh && bash /tmp/bootstrap.sh
 ```
 
 Or clone and run locally:
