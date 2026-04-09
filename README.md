@@ -62,7 +62,7 @@ scripts/
     ├── load_pg_dump.sh      # load_pg_dump — restore DB dump
     ├── release.sh           # release — create release PR
     ├── deploy.sh            # deploy — merge and push release
-    ├── release_micro.sh     # release_micro — cherry-pick micro release
+    ├── hotfix.sh             # hotfix — cherry-pick hotfix release
     ├── timesheet.sh         # timesheet — format timesheet entries
     └── startup.sh           # startup — open dev apps
 ```

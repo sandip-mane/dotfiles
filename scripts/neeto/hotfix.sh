@@ -1,5 +1,5 @@
 # Creates a cherry-picked micro release from production and opens a PR
-release_micro() {
+hotfix() {
   REPO_NAME=$(basename $(pwd))
   RELEASE_BRANCH=$(date "+release-%Y-%m-%d-micro")
   BASE_BRANCH=production
