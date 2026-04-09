@@ -47,15 +47,25 @@ Each folder mirrors `$HOME` and is symlinked via `stow`.
 
 ### Shell Scripts (`scripts/`)
 
-Sourced automatically by `.zshrc`:
+Sourced automatically by `.zshrc`. Organized by domain:
 
-| Script              | Functions                                      |
-| ------------------- | ---------------------------------------------- |
-| `llm.sh`            | `cldw` — Claude worktree helper                |
-| `neeto_db.sh`       | `load_pg_dump` — PostgreSQL dump loader         |
-| `neeto_release.sh`  | `release`, `deploy`, `release_micro`            |
-| `neeto_workflow.sh` | `sendpr`, `commitlog`, `move_project_items`, `timesheet` |
-| `startup.sh`        | `startup` — project startup                    |
+```
+scripts/
+├── ai/
+│   └── cldw.sh              # cldw — Claude worktree helper
+├── git/
+│   ├── sendpr.sh            # sendpr — create PR with issue linking
+│   ├── commitlog.sh         # commitlog — formatted branch commit log
+│   └── move_project_items.sh # move_project_items — bulk move GitHub project items
+└── neeto/
+    ├── _helpers.sh          # show_progress — shared progress display
+    ├── load_pg_dump.sh      # load_pg_dump — restore DB dump
+    ├── release.sh           # release — create release PR
+    ├── deploy.sh            # deploy — merge and push release
+    ├── release_micro.sh     # release_micro — cherry-pick micro release
+    ├── timesheet.sh         # timesheet — format timesheet entries
+    └── startup.sh           # startup — open dev apps
+```
 
 ### Other Files
 
@@ -70,6 +80,14 @@ Sourced automatically by `.zshrc`:
    - `~/.somerc` → `packages/toolname/.somerc`
    - `~/.config/tool/config.toml` → `packages/toolname/.config/tool/config.toml`
 3. Remove the original and stow: `stow -d packages -t ~ -R toolname`
+
+## Manual Installs
+
+These apps can't be installed via Homebrew or the Mac App Store:
+
+| App | Download |
+| --- | -------- |
+| NeetoRecord | https://neetorecord.com/neetorecord/download |
 
 ## Raycast
 

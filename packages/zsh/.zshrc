@@ -44,7 +44,7 @@ alias gitclean="git branch | grep -v \* | xargs git branch -D"
 alias mec="ga . && git commit -m 'Minor enhancement' && ggpnp"
 
 # Load all scripts from dotfiles repo
-for script in ~/Work/dotfiles/scripts/*.sh; do
+for script in ~/Work/dotfiles/scripts/**/*.sh; do
   [ -e "$script" ] && source "$script"
 done
 

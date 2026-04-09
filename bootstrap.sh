@@ -104,3 +104,6 @@ fi
 
 echo ""
 echo "Bootstrap complete! Restart your terminal to apply all changes."
+echo ""
+echo "The following apps need to be installed manually:"
+echo "  - NeetoRecord: https://neetorecord.com/neetorecord/download"

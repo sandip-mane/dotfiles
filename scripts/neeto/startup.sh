@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Opens a set of commonly used applications for development work
-startup() {  
+startup() {
   open -a "Firefox"
   open -a "Brave Browser"
   open -a "Spark"
