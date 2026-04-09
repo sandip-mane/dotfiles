@@ -25,9 +25,8 @@ defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 
 # Screenshots: save to ~/Screenshots, no shadow
-defaults write com.apple.screencapture location -string "$HOME/Screenshots"
+defaults write com.apple.screencapture location -string "$HOME/Downloads"
 defaults write com.apple.screencapture disable-shadow -bool true
-mkdir -p "$HOME/Screenshots"
 
 # Disable auto-correct and smart quotes (interferes with code)
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
