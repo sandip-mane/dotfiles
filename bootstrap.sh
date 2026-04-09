@@ -38,10 +38,23 @@ fi
 echo "Installing Homebrew packages..."
 brew bundle --file="$DOTFILES/Brewfile"
 
-# 5. VS Code extensions
-if command -v code &>/dev/null && [ -f "$DOTFILES/vscode/extensions.txt" ]; then
-  echo "Installing VS Code extensions..."
-  xargs -L 1 code --install-extension < "$DOTFILES/vscode/extensions.txt" || true
+# 5. VS Code extensions and settings
+if command -v code &>/dev/null; then
+  if [ -f "$DOTFILES/vscode/extensions.txt" ]; then
+    echo "Installing VS Code extensions..."
+    xargs -L 1 code --install-extension < "$DOTFILES/vscode/extensions.txt" || true
+  fi
+
+  echo "Applying VS Code settings..."
+  VSCODE_PROFILE_DIR="$HOME/Library/Application Support/Code/User/profiles"
+  VSCODE_ACTIVE_PROFILE=$(ls "$VSCODE_PROFILE_DIR" 2>/dev/null | head -1)
+  if [ -n "$VSCODE_ACTIVE_PROFILE" ]; then
+    VSCODE_TARGET="$VSCODE_PROFILE_DIR/$VSCODE_ACTIVE_PROFILE"
+  else
+    VSCODE_TARGET="$HOME/Library/Application Support/Code/User"
+  fi
+  cp "$DOTFILES/vscode/settings.json" "$VSCODE_TARGET/settings.json"
+  cp "$DOTFILES/vscode/keybindings.json" "$VSCODE_TARGET/keybindings.json"
 fi
 
 # 6. Oh My Zsh
