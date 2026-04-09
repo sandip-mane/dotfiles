@@ -1,0 +1,7 @@
+[settings]
+paranoid = false
+trusted_config_paths = ["~/Work/neetozone"]
+
+[tools]
+node = "22.13.1"
+yarn = "1.22.22"

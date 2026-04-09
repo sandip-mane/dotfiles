@@ -1,0 +1,20 @@
+.DS_Store
+*.backup.*
+*.swp
+*.swo
+*~
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# SSH private keys (only config is tracked)
+packages/ssh/.ssh/id_*
+packages/ssh/.ssh/known_hosts
+
+# OS generated
+.Spotlight-V100
+.Trashes
+Thumbs.db

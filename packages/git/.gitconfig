@@ -1,0 +1,12 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	name = Sandip Mane
+	email = sandip2490@gmail.com
+[push]
+	autoSetupRemote = true
+[core]
+	editor = code --wait
