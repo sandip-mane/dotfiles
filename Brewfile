@@ -15,7 +15,7 @@ brew "opensearch"
 brew "postgresql@18", restart_service: :changed
 brew "redis", restart_service: :changed
 brew "stow"
-brew "tunnelto"
+brew "tunneltodev/tap/tunnelto"
 brew "zsh"
 
 # GUI applications
