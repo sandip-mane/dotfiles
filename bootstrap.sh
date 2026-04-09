@@ -1,11 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-# Prevent sleep during bootstrap
-if [ -z "${CAFFEINATED:-}" ]; then
-  exec env CAFFEINATED=1 caffeinate -i "$0" "$@"
-fi
-
 DOTFILES="$HOME/Work/dotfiles"
 
 echo "Starting Mac bootstrap..."
