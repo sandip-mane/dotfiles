@@ -34,9 +34,9 @@ echo "Installing Homebrew packages..."
 brew bundle --file="$DOTFILES/Brewfile"
 
 # 5. VS Code settings
-if command -v code &>/dev/null && [ -f "$DOTFILES/vscode/sandip.code-profile" ]; then
+if command -v code &>/dev/null && [ -f "$DOTFILES/configs/vscode/sandip.code-profile" ]; then
   echo "Applying VS Code settings..."
-  PROFILE_JSON=$(cat "$DOTFILES/vscode/sandip.code-profile")
+  PROFILE_JSON=$(cat "$DOTFILES/configs/vscode/sandip.code-profile")
   VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
 
   # Find target: existing profile dir or base User dir
@@ -118,10 +118,10 @@ fi
 # 10. macOS and app defaults
 echo "Applying macOS defaults..."
 source "$DOTFILES/macos.sh"
-source "$DOTFILES/calendr/defaults.sh"
-source "$DOTFILES/maccy/defaults.sh"
+source "$DOTFILES/configs/calendr/defaults.sh"
+source "$DOTFILES/configs/maccy/defaults.sh"
 mkdir -p "$HOME/Library/Application Support/com.nuebling.mac-mouse-fix"
-cp "$DOTFILES/mac-mouse-fix/config.plist" "$HOME/Library/Application Support/com.nuebling.mac-mouse-fix/config.plist"
+cp "$DOTFILES/configs/mac-mouse-fix/config.plist" "$HOME/Library/Application Support/com.nuebling.mac-mouse-fix/config.plist"
 
 # 11. Set default shell to Homebrew zsh
 BREW_ZSH="/opt/homebrew/bin/zsh"
@@ -137,12 +137,12 @@ if [ -x "$BREW_ZSH" ]; then
 fi
 
 # 12. Import Raycast config
-if [ -f "$DOTFILES/raycast/config.rayconfig" ]; then
+if [ -f "$DOTFILES/configs/raycast/config.rayconfig" ]; then
   echo "Opening Raycast for config import..."
   open -a "Raycast"
   sleep 3
   echo "Importing Raycast config — use password: 12345678"
-  open "$DOTFILES/raycast/config.rayconfig"
+  open "$DOTFILES/configs/raycast/config.rayconfig"
 fi
 
 # 13. Add login items

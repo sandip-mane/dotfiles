@@ -16,12 +16,6 @@ brew update
 brew bundle --file="$DOTFILES/Brewfile"
 brew cleanup
 
-# VS Code extensions
-if command -v code &>/dev/null && [ -f "$DOTFILES/vscode/extensions.txt" ]; then
-  echo "Syncing VS Code extensions..."
-  xargs -L 1 code --install-extension < "$DOTFILES/vscode/extensions.txt" || true
-fi
-
 # Re-stow all packages
 echo "Re-stowing packages..."
 for pkg in packages/*/; do

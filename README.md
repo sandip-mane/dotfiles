@@ -20,17 +20,6 @@ cd ~/Work/dotfiles
 
 ## After Bootstrap
 
-Sign into these apps manually (use 1Password to autofill):
-
-1. **1Password** — master password + secret key
-2. **Firefox** — Firefox Sync to restore bookmarks, extensions, passwords
-3. **Brave** — Brave Sync
-4. **Slack** — sign in via browser
-5. **GitHub Desktop** — sign in via browser
-6. **Spark** — sign in to restore email and settings
-
-Grant Accessibility permissions: **Magnet, Maccy, Raycast, Lunar**
-
 Install manually: [NeetoRecord](https://neetorecord.com/neetorecord/download)
 
 ## Sync
@@ -65,11 +54,11 @@ Each folder mirrors `$HOME` and is symlinked via `stow`.
 | App            | Config                          |
 | -------------- | ------------------------------- |
 | macOS          | `macos.sh` — sane defaults for macOS |
-| VS Code        | `vscode/sandip.code-profile`    |
-| Raycast        | `raycast/config.rayconfig`      |
-| Calendr        | `calendr/defaults.sh`           |
-| Maccy          | `maccy/defaults.sh`             |
-| Mac Mouse Fix  | `mac-mouse-fix/config.plist`    |
+| VS Code        | `configs/vscode/sandip.code-profile`    |
+| Raycast        | `configs/raycast/config.rayconfig`      |
+| Calendr        | `configs/calendr/defaults.sh`           |
+| Maccy          | `configs/maccy/defaults.sh`             |
+| Mac Mouse Fix  | `configs/mac-mouse-fix/config.plist`    |
 
 ### Packages & Apps
 
