@@ -1,11 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git *)",
-      "Bash(gh pr *)",
-      "Bash(open *)",
-      "Bash(bundle exec *)",
-      "Bash(/Users/sandip/Work/neetozone/**)",
+      "Bash",
       "Read",
       "Edit",
       "Write",
