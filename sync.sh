@@ -19,7 +19,7 @@ brew cleanup
 # Re-stow all packages
 echo "Re-stowing packages..."
 for pkg in packages/*/; do
-  stow -d packages -t "$HOME" -R "$(basename "$pkg")"
+  stow -d packages -t "$HOME" --no-folding -R "$(basename "$pkg")"
 done
 
 # Update oh-my-zsh plugins and theme

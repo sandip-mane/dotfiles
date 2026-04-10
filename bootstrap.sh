@@ -105,8 +105,8 @@ done
 
 cd "$DOTFILES"
 for pkg in packages/*/; do
-  stow -d packages -t "$HOME" -R "$(basename "$pkg")" 2>/dev/null || \
-  stow -d packages -t "$HOME" --adopt -R "$(basename "$pkg")"
+  stow -d packages -t "$HOME" --no-folding -R "$(basename "$pkg")" 2>/dev/null || \
+  stow -d packages -t "$HOME" --no-folding --adopt -R "$(basename "$pkg")"
 done
 git -C "$DOTFILES" checkout -- packages/
 
