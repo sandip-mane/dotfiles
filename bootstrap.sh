@@ -48,6 +48,7 @@ if command -v code &>/dev/null; then
   else
     VSCODE_TARGET="$HOME/Library/Application Support/Code/User"
   fi
+  mkdir -p "$VSCODE_TARGET"
   cp "$DOTFILES/vscode/settings.json" "$VSCODE_TARGET/settings.json"
   cp "$DOTFILES/vscode/keybindings.json" "$VSCODE_TARGET/keybindings.json"
 fi
@@ -117,12 +118,22 @@ fi
 
 # 11. Import Raycast config
 if [ -f "$DOTFILES/raycast/config.rayconfig" ]; then
-  echo "Opening Raycast config for import (confirm in the Raycast dialog)..."
+  echo "Opening Raycast for config import..."
+  open -a "Raycast"
+  sleep 3
+  echo "Importing Raycast config (confirm in the Raycast dialog)..."
   open "$DOTFILES/raycast/config.rayconfig"
 fi
+
+# 12. Add login items
+echo "Adding login items..."
+for app in "Docker" "Calendr" "1Password" "Maccy" "Lunar" "Magnet"; do
+  osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"/Applications/$app.app\", hidden:false}" 2>/dev/null || true
+done
 
 echo ""
 echo "Bootstrap complete! Restart your terminal to apply all changes."
 echo ""
-echo "The following apps need to be installed manually:"
-echo "  - NeetoRecord: https://neetorecord.com/neetorecord/download"
+echo "Manual steps:"
+echo "  - Install NeetoRecord: https://neetorecord.com/neetorecord/download"
+echo "  - Grant Accessibility permissions for: Magnet, Maccy, Raycast, Lunar"
