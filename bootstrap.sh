@@ -36,7 +36,7 @@ brew bundle --file="$DOTFILES/Brewfile"
 # 5. VS Code profile
 if command -v code &>/dev/null && [ -f "$DOTFILES/vscode/sandip.code-profile" ]; then
   echo "Importing VS Code profile (confirm in the VS Code dialog)..."
-  code --open-url "vscode://app/import-profile?url=file://$DOTFILES/vscode/sandip.code-profile"
+  code "$DOTFILES/vscode/sandip.code-profile"
 fi
 
 # 6. Oh My Zsh
