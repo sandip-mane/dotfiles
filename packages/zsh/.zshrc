@@ -32,6 +32,9 @@ else
   [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 fi
 
+# Load secrets (API keys, tokens)
+[[ -f ~/.secrets ]] && source ~/.secrets
+
 # Aliases
 alias bi="bundle install"
 alias b="bundle exec"

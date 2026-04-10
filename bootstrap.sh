@@ -88,7 +88,7 @@ fi
 
 # 8. Backup existing dotfiles and stow
 echo "Stowing dotfiles..."
-for f in .zshrc .p10k.zsh .gitconfig .vimrc .wezterm.lua; do
+for f in .zshrc .p10k.zsh .gitconfig .vimrc .wezterm.lua .mcp.json; do
   if [ -f "$HOME/$f" ] && [ ! -L "$HOME/$f" ]; then
     echo "  Backing up ~/$f"
     mv "$HOME/$f" "$HOME/$f.backup.$(date +%s)"
@@ -96,7 +96,7 @@ for f in .zshrc .p10k.zsh .gitconfig .vimrc .wezterm.lua; do
 done
 
 # Backup nested configs
-for f in .ssh/config .config/mise/config.toml .config/gh/config.yml .config/atuin/config.toml .docker/config.json; do
+for f in .ssh/config .config/mise/config.toml .config/gh/config.yml .config/atuin/config.toml .docker/config.json .claude/settings.json .claude/CLAUDE.md; do
   if [ -f "$HOME/$f" ] && [ ! -L "$HOME/$f" ]; then
     echo "  Backing up ~/$f"
     mv "$HOME/$f" "$HOME/$f.backup.$(date +%s)"
@@ -141,7 +141,7 @@ if [ -f "$DOTFILES/configs/raycast/config.rayconfig" ]; then
   echo "Opening Raycast for config import..."
   open -a "Raycast"
   sleep 3
-  echo "Importing Raycast config — use password: 12345678"
+  echo "Importing Raycast config — use password: oneringtorulethemall"
   open "$DOTFILES/configs/raycast/config.rayconfig"
 fi
 
@@ -157,3 +157,4 @@ echo ""
 echo "Manual steps:"
 echo "  - Install NeetoRecord: https://neetorecord.com/neetorecord/download"
 echo "  - Grant Accessibility permissions for: Magnet, Maccy, Raycast, Lunar"
+echo "  - Sign into 1Password, then run: refresh-secrets"

@@ -7,6 +7,7 @@
 # Secrets
 .env
 .env.*
+.secrets
 *.pem
 *.key
 

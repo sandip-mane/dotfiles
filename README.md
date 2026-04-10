@@ -16,11 +16,21 @@ cd ~/Work/dotfiles
 ./bootstrap.sh
 ```
 
-> **Raycast import:** The bootstrap will open a Raycast import dialog. Use password: `12345678`
+> **Raycast import:** The bootstrap will open a Raycast import dialog. Use password: `oneringtorulethemall`
 
 ## After Bootstrap
 
 Install manually: [NeetoRecord](https://neetorecord.com/neetorecord/download)
+
+## Secrets
+
+API keys and tokens are stored in `~/.secrets` (never committed). The bootstrap generates this file automatically from 1Password.
+
+To regenerate manually:
+
+```bash
+refresh-secrets
+```
 
 ## Sync
 
@@ -48,6 +58,7 @@ Each folder mirrors `$HOME` and is symlinked via `stow`.
 | `gh`     | GitHub CLI config              |
 | `atuin`  | shell history config           |
 | `docker` | Docker client config           |
+| `claude` | Claude Code settings, MCP servers |
 
 ### App Configs
 
@@ -70,6 +81,7 @@ Sourced automatically by `.zshrc`. Organized by domain:
 
 | Script | Command | Description |
 | ------ | ------- | ----------- |
+| `secrets.sh` | `refresh-secrets` | Regenerate ~/.secrets from 1Password |
 | `ai/cldw.sh` | `cldw` | Claude worktree helper |
 | `git/sendpr.sh` | `sendpr` | Create PR with issue linking |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
