@@ -115,9 +115,13 @@ if command -v mise &>/dev/null; then
   mise install --yes
 fi
 
-# 10. macOS defaults
+# 10. macOS and app defaults
 echo "Applying macOS defaults..."
 source "$DOTFILES/macos.sh"
+source "$DOTFILES/calendr/defaults.sh"
+source "$DOTFILES/maccy/defaults.sh"
+mkdir -p "$HOME/Library/Application Support/com.nuebling.mac-mouse-fix"
+cp "$DOTFILES/mac-mouse-fix/config.plist" "$HOME/Library/Application Support/com.nuebling.mac-mouse-fix/config.plist"
 
 # 11. Set default shell to Homebrew zsh
 BREW_ZSH="/opt/homebrew/bin/zsh"
