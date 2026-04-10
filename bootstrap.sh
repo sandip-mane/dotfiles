@@ -42,7 +42,7 @@ if command -v code &>/dev/null; then
 
   echo "Applying VS Code settings..."
   VSCODE_PROFILE_DIR="$HOME/Library/Application Support/Code/User/profiles"
-  VSCODE_ACTIVE_PROFILE=$(ls "$VSCODE_PROFILE_DIR" 2>/dev/null | head -1)
+  VSCODE_ACTIVE_PROFILE=$(ls "$VSCODE_PROFILE_DIR" 2>/dev/null | head -1 || true)
   if [ -n "$VSCODE_ACTIVE_PROFILE" ]; then
     VSCODE_TARGET="$VSCODE_PROFILE_DIR/$VSCODE_ACTIVE_PROFILE"
   else
