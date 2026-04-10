@@ -32,8 +32,12 @@ for dir in \
   [ -d "$dir" ] && git -C "$dir" pull --quiet 2>/dev/null || true
 done
 
-# Apply macOS defaults
-echo "Applying macOS defaults..."
+# Apply macOS and app defaults
+echo "Applying defaults..."
 source "$DOTFILES/macos.sh"
+source "$DOTFILES/configs/calendr/defaults.sh"
+source "$DOTFILES/configs/maccy/defaults.sh"
+mkdir -p "$HOME/Library/Application Support/com.nuebling.mac-mouse-fix"
+cp "$DOTFILES/configs/mac-mouse-fix/config.plist" "$HOME/Library/Application Support/com.nuebling.mac-mouse-fix/config.plist"
 
 echo "Dotfiles synced."
