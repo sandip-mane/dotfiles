@@ -1,6 +1,6 @@
 # dotfiles
 
-My macOS setup and dotfiles, managed with [GNU Stow](https://www.gnu.org/software/stow/).
+My macOS setup, managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Fresh Machine Install
 
@@ -16,23 +16,41 @@ cd ~/Work/dotfiles
 ./bootstrap.sh
 ```
 
-## Updating
+> **Raycast import:** The bootstrap will open a Raycast import dialog. Use password: `12345678`
 
-After pulling changes or editing dotfiles:
+## Sync Changes
+
+After editing dotfiles or pulling updates:
 
 ```bash
 ./sync.sh
-# or
-make sync
 ```
 
-## What's Included
+## After Bootstrap
 
-### Stow Packages (`packages/`)
+Sign into these apps manually (use 1Password to autofill):
 
-Each folder mirrors `$HOME` and is symlinked via `stow`.
+1. **1Password** — master password + secret key
+2. **Firefox** — Firefox Sync to restore bookmarks, extensions, passwords
+3. **Brave** — Brave Sync
+4. **Slack** — sign in via browser
+5. **GitHub Desktop** — sign in via browser
+6. **Spark** — sign in to restore email and settings
 
-| Package  | What it configures             |
+Grant Accessibility permissions: **Magnet, Maccy, Raycast, Lunar**
+
+Install manually: [NeetoRecord](https://neetorecord.com/neetorecord/download)
+
+## Updating Raycast Config
+
+**Raycast → Settings → Advanced → Export** (without encryption), then replace `raycast/config.rayconfig`.
+
+<details>
+<summary>Stow Packages</summary>
+
+Each folder in `packages/` mirrors `$HOME` and is symlinked via `stow`.
+
+| Package  | Configures                     |
 | -------- | ------------------------------ |
 | `zsh`    | `.zshrc` — shell config        |
 | `p10k`   | `.p10k.zsh` — Powerlevel10k    |
@@ -45,7 +63,21 @@ Each folder mirrors `$HOME` and is symlinked via `stow`.
 | `atuin`  | shell history config           |
 | `docker` | Docker client config           |
 
-### Shell Scripts (`scripts/`)
+</details>
+
+<details>
+<summary>Homebrew Packages</summary>
+
+**CLI tools:** aria2, atuin, defaultbrowser, fzf, gh, imagemagick, libyaml, mas, mise, node, opensearch, postgresql@18, redis, stow, tunnelto, zsh
+
+**GUI apps:** 1Password, 1Password CLI, Brave Browser, Calendr, Claude, Claude Code, CleanShot, Docker Desktop, Firefox, Fira Code font, GitHub Desktop, HTTPie Desktop, Lunar, Mac Mouse Fix, Maccy, Notion, Numi, Raycast, Spark, Slack, WezTerm, WhatsApp, Zoom
+
+**Mac App Store:** 1Password for Safari, Amphetamine, Bear, Magnet
+
+</details>
+
+<details>
+<summary>Shell Scripts</summary>
 
 Sourced automatically by `.zshrc`. Organized by domain:
 
@@ -62,43 +94,25 @@ scripts/
     ├── load_pg_dump.sh      # load_pg_dump — restore DB dump
     ├── release.sh           # release — create release PR
     ├── deploy.sh            # deploy — merge and push release
-    ├── hotfix.sh             # hotfix — cherry-pick hotfix release
+    ├── hotfix.sh            # hotfix — cherry-pick hotfix release
     ├── timesheet.sh         # timesheet — format timesheet entries
     └── startup.sh           # startup — open dev apps
 ```
 
-### Other Files
+</details>
 
-- `Brewfile` — Homebrew formulae, casks, and Mac App Store apps
-- `macos.sh` — macOS system defaults
-- `vscode/extensions.txt` — VS Code extensions list
+<details>
+<summary>App Configs</summary>
 
-## Adding a New Dotfile
+These app preferences are applied automatically during bootstrap:
 
-1. Create a stow package: `mkdir -p packages/toolname`
-2. Place the file mirroring its `$HOME` path:
-   - `~/.somerc` → `packages/toolname/.somerc`
-   - `~/.config/tool/config.toml` → `packages/toolname/.config/tool/config.toml`
-3. Remove the original and stow: `stow -d packages -t ~ -R toolname`
+| App            | Config                          |
+| -------------- | ------------------------------- |
+| VS Code        | `vscode/sandip.code-profile`    |
+| Raycast        | `raycast/config.rayconfig`      |
+| Calendr        | `calendr/defaults.sh`           |
+| Maccy          | `maccy/defaults.sh`             |
+| Mac Mouse Fix  | `mac-mouse-fix/config.plist`    |
+| macOS          | `macos.sh`                      |
 
-## Manual Installs
-
-These apps can't be installed via Homebrew or the Mac App Store:
-
-| App | Download |
-| --- | -------- |
-| NeetoRecord | https://neetorecord.com/neetorecord/download |
-
-## Raycast
-
-Raycast config is stored at `raycast/config.rayconfig`. The bootstrap script opens it automatically — just confirm the import in the Raycast dialog.
-
-To update: **Raycast → Settings → Advanced → Export** (without encryption), then replace `raycast/config.rayconfig`.
-
-## Secrets
-
-Secrets are managed via [1Password CLI](https://developer.1password.com/docs/cli/) and never committed:
-
-```bash
-export SOME_TOKEN="$(op read 'op://Vault/Item/field')"
-```
+</details>
