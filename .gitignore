@@ -15,6 +15,17 @@
 packages/ssh/.ssh/id_*
 packages/ssh/.ssh/known_hosts
 
+# Docker runtime files (only config.json is tracked)
+packages/docker/.docker/bin/
+packages/docker/.docker/buildx/
+packages/docker/.docker/cli-plugins/
+packages/docker/.docker/contexts/
+packages/docker/.docker/daemon.json
+packages/docker/.docker/desktop-build/
+packages/docker/.docker/models/
+packages/docker/.docker/modules/
+packages/docker/.docker/mutagen/
+
 # OS generated
 .Spotlight-V100
 .Trashes

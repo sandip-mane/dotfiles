@@ -45,6 +45,9 @@ defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
+# Disable Gatekeeper "app downloaded from internet" confirmation
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
 # Default browser
 if command -v defaultbrowser &>/dev/null; then
   defaultbrowser firefox

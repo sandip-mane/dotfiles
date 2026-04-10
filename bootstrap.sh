@@ -105,8 +105,9 @@ done
 
 cd "$DOTFILES"
 for pkg in packages/*/; do
-  stow -d packages -t "$HOME" -R "$(basename "$pkg")"
+  stow -d packages -t "$HOME" --adopt -R "$(basename "$pkg")"
 done
+git checkout -- packages/
 
 # 9. Install mise runtimes
 if command -v mise &>/dev/null; then
