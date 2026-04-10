@@ -33,10 +33,33 @@ fi
 echo "Installing Homebrew packages..."
 brew bundle --file="$DOTFILES/Brewfile"
 
-# 5. VS Code profile
+# 5. VS Code settings
 if command -v code &>/dev/null && [ -f "$DOTFILES/vscode/sandip.code-profile" ]; then
-  echo "Importing VS Code profile (confirm in the VS Code dialog)..."
-  code "$DOTFILES/vscode/sandip.code-profile"
+  echo "Applying VS Code settings..."
+  PROFILE_JSON=$(cat "$DOTFILES/vscode/sandip.code-profile")
+  VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
+
+  # Find target: existing profile dir or base User dir
+  VSCODE_ACTIVE_PROFILE=$(ls "$VSCODE_USER_DIR/profiles" 2>/dev/null | head -1 || true)
+  if [ -n "$VSCODE_ACTIVE_PROFILE" ]; then
+    VSCODE_TARGET="$VSCODE_USER_DIR/profiles/$VSCODE_ACTIVE_PROFILE"
+  else
+    VSCODE_TARGET="$VSCODE_USER_DIR"
+  fi
+  mkdir -p "$VSCODE_TARGET"
+
+  # Extract settings and keybindings from profile and write as files
+  echo "$PROFILE_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.loads(d['settings']) if isinstance(d['settings'],str) else d['settings'])" > /dev/null 2>&1 && \
+  echo "$PROFILE_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps(json.loads(d['settings']),indent=4))" > "$VSCODE_TARGET/settings.json" && \
+  echo "$PROFILE_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps(json.loads(d['keybindings']),indent=4))" > "$VSCODE_TARGET/keybindings.json"
+
+  # Install extensions from profile
+  echo "$PROFILE_JSON" | python3 -c "
+import sys,json
+d=json.load(sys.stdin)
+for ext in json.loads(d['extensions']):
+    print(ext['identifier']['id'])
+" | xargs -L 1 code --install-extension 2>/dev/null || true
 fi
 
 # 6. Oh My Zsh
