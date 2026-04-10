@@ -85,11 +85,18 @@ for pkg in packages/*/; do
   stow -d packages -t "$HOME" -R "$(basename "$pkg")"
 done
 
-# 9. macOS defaults
+# 9. Install mise runtimes
+if command -v mise &>/dev/null; then
+  echo "Installing mise runtimes..."
+  eval "$(mise activate bash)"
+  mise install --yes
+fi
+
+# 10. macOS defaults
 echo "Applying macOS defaults..."
 source "$DOTFILES/macos.sh"
 
-# 10. Set default shell to Homebrew zsh
+# 11. Set default shell to Homebrew zsh
 BREW_ZSH="/opt/homebrew/bin/zsh"
 if [ -x "$BREW_ZSH" ]; then
   if ! grep -q "$BREW_ZSH" /etc/shells; then
@@ -102,7 +109,7 @@ if [ -x "$BREW_ZSH" ]; then
   fi
 fi
 
-# 11. Import Raycast config
+# 12. Import Raycast config
 if [ -f "$DOTFILES/raycast/config.rayconfig" ]; then
   echo "Opening Raycast for config import..."
   open -a "Raycast"
@@ -111,7 +118,7 @@ if [ -f "$DOTFILES/raycast/config.rayconfig" ]; then
   open "$DOTFILES/raycast/config.rayconfig"
 fi
 
-# 12. Add login items
+# 13. Add login items
 echo "Adding login items..."
 for app in "Docker" "Calendr" "1Password" "Maccy" "Lunar" "Magnet"; do
   osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"/Applications/$app.app\", hidden:false}" 2>/dev/null || true
