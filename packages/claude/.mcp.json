@@ -6,9 +6,13 @@
       "env": { "GITHUB_TOKEN": "${GITHUB_TOKEN}" }
     },
     "honeybadger": {
-      "command": "npx",
-      "args": ["-y", "@honeybadger-io/mcp-server"],
-      "env": { "HONEYBADGER_API_KEY": "${HONEYBADGER_API_KEY}" }
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "HONEYBADGER_PERSONAL_AUTH_TOKEN",
+        "ghcr.io/honeybadger-io/honeybadger-mcp-server"
+      ],
+      "env": { "HONEYBADGER_PERSONAL_AUTH_TOKEN": "${HONEYBADGER_API_KEY}" }
     },
     "context7": {
       "command": "npx",
