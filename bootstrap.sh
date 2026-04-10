@@ -33,24 +33,10 @@ fi
 echo "Installing Homebrew packages..."
 brew bundle --file="$DOTFILES/Brewfile"
 
-# 5. VS Code extensions and settings
-if command -v code &>/dev/null; then
-  if [ -f "$DOTFILES/vscode/extensions.txt" ]; then
-    echo "Installing VS Code extensions..."
-    xargs -L 1 code --install-extension < "$DOTFILES/vscode/extensions.txt" || true
-  fi
-
-  echo "Applying VS Code settings..."
-  VSCODE_PROFILE_DIR="$HOME/Library/Application Support/Code/User/profiles"
-  VSCODE_ACTIVE_PROFILE=$(ls "$VSCODE_PROFILE_DIR" 2>/dev/null | head -1 || true)
-  if [ -n "$VSCODE_ACTIVE_PROFILE" ]; then
-    VSCODE_TARGET="$VSCODE_PROFILE_DIR/$VSCODE_ACTIVE_PROFILE"
-  else
-    VSCODE_TARGET="$HOME/Library/Application Support/Code/User"
-  fi
-  mkdir -p "$VSCODE_TARGET"
-  cp "$DOTFILES/vscode/settings.json" "$VSCODE_TARGET/settings.json"
-  cp "$DOTFILES/vscode/keybindings.json" "$VSCODE_TARGET/keybindings.json"
+# 5. VS Code profile
+if command -v code &>/dev/null && [ -f "$DOTFILES/vscode/sandip.code-profile" ]; then
+  echo "Importing VS Code profile (confirm in the VS Code dialog)..."
+  open "$DOTFILES/vscode/sandip.code-profile"
 fi
 
 # 6. Oh My Zsh
@@ -121,7 +107,7 @@ if [ -f "$DOTFILES/raycast/config.rayconfig" ]; then
   echo "Opening Raycast for config import..."
   open -a "Raycast"
   sleep 3
-  echo "Importing Raycast config (confirm in the Raycast dialog)..."
+  echo "Importing Raycast config — use password: 12345678"
   open "$DOTFILES/raycast/config.rayconfig"
 fi
 

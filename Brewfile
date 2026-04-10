@@ -4,6 +4,7 @@ tap "tunneltodev/tap"
 # CLI tools
 brew "aria2"
 brew "atuin"
+brew "claude-code"
 brew "fzf"
 brew "gh"
 brew "imagemagick"
@@ -16,6 +17,7 @@ brew "postgresql@18", restart_service: :changed
 brew "redis", restart_service: :changed
 brew "stow"
 brew "tunneltodev/tap/tunnelto"
+brew "defaultbrowser"
 brew "zsh"
 
 # GUI applications
@@ -42,10 +44,8 @@ cask "wezterm"
 cask "whatsapp"
 cask "zoom"
 
-# VS Code extensions
-vscode "github.copilot-chat"
-
 # Mac App Store
+mas "1Password for Safari", id: 1569813296
 mas "Amphetamine", id: 937984704
 mas "Bear", id: 1091189122
 mas "Magnet", id: 441258766

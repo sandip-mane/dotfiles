@@ -45,6 +45,11 @@ defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
+# Default browser
+if command -v defaultbrowser &>/dev/null; then
+  defaultbrowser firefox
+fi
+
 # Restart affected apps
 for app in Finder Dock SystemUIServer; do
   killall "$app" 2>/dev/null || true
