@@ -18,14 +18,6 @@ cd ~/Work/dotfiles
 
 > **Raycast import:** The bootstrap will open a Raycast import dialog. Use password: `12345678`
 
-## Sync Changes
-
-After editing dotfiles or pulling updates:
-
-```bash
-./sync.sh
-```
-
 ## After Bootstrap
 
 Sign into these apps manually (use 1Password to autofill):
@@ -41,14 +33,19 @@ Grant Accessibility permissions: **Magnet, Maccy, Raycast, Lunar**
 
 Install manually: [NeetoRecord](https://neetorecord.com/neetorecord/download)
 
-## Updating Raycast Config
+## Sync
 
-**Raycast → Settings → Advanced → Export** (without encryption), then replace `raycast/config.rayconfig`.
+After editing dotfiles or pulling updates:
 
-<details>
-<summary>Stow Packages</summary>
+```bash
+./sync.sh
+```
 
-Each folder in `packages/` mirrors `$HOME` and is symlinked via `stow`.
+## What's Inside
+
+### Dotfiles (`packages/`)
+
+Each folder mirrors `$HOME` and is symlinked via `stow`.
 
 | Package  | Configures                     |
 | -------- | ------------------------------ |
@@ -63,56 +60,34 @@ Each folder in `packages/` mirrors `$HOME` and is symlinked via `stow`.
 | `atuin`  | shell history config           |
 | `docker` | Docker client config           |
 
-</details>
-
-<details>
-<summary>Homebrew Packages</summary>
-
-**CLI tools:** aria2, atuin, defaultbrowser, fzf, gh, imagemagick, libyaml, mas, mise, node, opensearch, postgresql@18, redis, stow, tunnelto, zsh
-
-**GUI apps:** 1Password, 1Password CLI, Brave Browser, Calendr, Claude, Claude Code, CleanShot, Docker Desktop, Firefox, Fira Code font, GitHub Desktop, HTTPie Desktop, Lunar, Mac Mouse Fix, Maccy, Notion, Numi, Raycast, Spark, Slack, WezTerm, WhatsApp, Zoom
-
-**Mac App Store:** 1Password for Safari, Amphetamine, Bear, Magnet
-
-</details>
-
-<details>
-<summary>Shell Scripts</summary>
-
-Sourced automatically by `.zshrc`. Organized by domain:
-
-```
-scripts/
-├── ai/
-│   └── cldw.sh              # cldw — Claude worktree helper
-├── git/
-│   ├── sendpr.sh            # sendpr — create PR with issue linking
-│   ├── commitlog.sh         # commitlog — formatted branch commit log
-│   └── move_project_items.sh # move_project_items — bulk move GitHub project items
-└── neeto/
-    ├── _helpers.sh          # show_progress — shared progress display
-    ├── load_pg_dump.sh      # load_pg_dump — restore DB dump
-    ├── release.sh           # release — create release PR
-    ├── deploy.sh            # deploy — merge and push release
-    ├── hotfix.sh            # hotfix — cherry-pick hotfix release
-    ├── timesheet.sh         # timesheet — format timesheet entries
-    └── startup.sh           # startup — open dev apps
-```
-
-</details>
-
-<details>
-<summary>App Configs</summary>
-
-These app preferences are applied automatically during bootstrap:
+### App Configs
 
 | App            | Config                          |
 | -------------- | ------------------------------- |
+| macOS          | `macos.sh` — sane defaults for macOS |
 | VS Code        | `vscode/sandip.code-profile`    |
 | Raycast        | `raycast/config.rayconfig`      |
 | Calendr        | `calendr/defaults.sh`           |
 | Maccy          | `maccy/defaults.sh`             |
 | Mac Mouse Fix  | `mac-mouse-fix/config.plist`    |
-| macOS          | `macos.sh`                      |
 
-</details>
+### Packages & Apps
+
+See [`Brewfile`](Brewfile) for the full list of CLI tools, GUI apps, and Mac App Store installs.
+
+### Shell Scripts (`scripts/`)
+
+Sourced automatically by `.zshrc`. Organized by domain:
+
+| Script | Command | Description |
+| ------ | ------- | ----------- |
+| `ai/cldw.sh` | `cldw` | Claude worktree helper |
+| `git/sendpr.sh` | `sendpr` | Create PR with issue linking |
+| `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
+| `git/move_project_items.sh` | `move_project_items` | Bulk move GitHub project items |
+| `neeto/release.sh` | `release` | Create release PR |
+| `neeto/deploy.sh` | `deploy` | Merge and push release |
+| `neeto/hotfix.sh` | `hotfix` | Cherry-pick hotfix release |
+| `neeto/load_pg_dump.sh` | `load_pg_dump` | Restore DB dump |
+| `neeto/timesheet.sh` | `timesheet` | Format timesheet entries |
+| `neeto/startup.sh` | `startup` | Open dev apps |
