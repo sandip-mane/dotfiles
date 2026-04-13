@@ -25,12 +25,10 @@ cd ~/Work/dotfiles
 
 - [ ] **Sign into 1Password** — `op account add --address domain.1password.com --email x@example.com`
 - [ ] **Generate secrets** — run `refresh-secrets` to populate `~/.secrets` from 1Password
-- [ ] **Install [NeetoRecord](https://neetorecord.com/neetorecord/download)**
 - [ ] **Remap Caps Lock to Control** — System Settings → Keyboard → Keyboard Shortcuts → Modifier Keys
-- [ ] **Grant Accessibility permissions** — Magnet, Maccy, Raycast, Lunar
-- [ ] **Sign into apps** — Firefox Sync, Brave Sync, Slack, GitHub Desktop, Spark
 - [ ] **Add Work folder to Finder sidebar** — drag `~/Work` to Favorites
 - [ ] **Sync Bear notes** — run `bearit`
+- [ ] **Install [NeetoRecord](https://neetorecord.com/neetorecord/download)**
 
 </details>
 
