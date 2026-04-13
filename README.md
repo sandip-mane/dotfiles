@@ -24,7 +24,7 @@ cd ~/Work/dotfiles
 <summary>Manual steps after bootstrap</summary>
 
 - [ ] **Sign into 1Password** — `op account add --address domain.1password.com --email x@example.com`
-- [ ] **Generate secrets** — run `refresh-secrets` to create `~/.secrets` for Claude MCP servers
+- [ ] **Generate secrets** — run `refresh-secrets` to populate `~/.secrets` from 1Password
 - [ ] **Install [NeetoRecord](https://neetorecord.com/neetorecord/download)**
 - [ ] **Remap Caps Lock to Control** — System Settings → Keyboard → Keyboard Shortcuts → Modifier Keys
 - [ ] **Grant Accessibility permissions** — Magnet, Maccy, Raycast, Lunar
