@@ -20,17 +20,19 @@ cd ~/Work/dotfiles
 
 ## After Bootstrap
 
-Install manually: [NeetoRecord](https://neetorecord.com/neetorecord/download)
+<details>
+<summary>Manual steps after bootstrap</summary>
 
-## Secrets
+- [ ] **Sign into 1Password** — `op account add --address domain.1password.com --email x@example.com`
+- [ ] **Generate secrets** — run `refresh-secrets` to create `~/.secrets` for Claude MCP servers
+- [ ] **Install [NeetoRecord](https://neetorecord.com/neetorecord/download)**
+- [ ] **Remap Caps Lock to Control** — System Settings → Keyboard → Keyboard Shortcuts → Modifier Keys
+- [ ] **Grant Accessibility permissions** — Magnet, Maccy, Raycast, Lunar
+- [ ] **Sign into apps** — Firefox Sync, Brave Sync, Slack, GitHub Desktop, Spark
+- [ ] **Add Work folder to Finder sidebar** — drag `~/Work` to Favorites
+- [ ] **Sync Bear notes** — run `bearit`
 
-API keys and tokens are stored in `~/.secrets` (never committed). The bootstrap generates this file automatically from 1Password.
-
-To regenerate manually:
-
-```bash
-refresh-secrets
-```
+</details>
 
 ## Sync
 
