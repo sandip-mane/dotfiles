@@ -3,6 +3,9 @@ set -euo pipefail
 
 DOTFILES="$HOME/Work/dotfiles"
 
+# Prevent sleep during bootstrap
+caffeinate -i -w $$ &
+
 echo "Starting Mac bootstrap..."
 
 # 1. Xcode Command Line Tools
@@ -29,7 +32,10 @@ else
   git -C "$DOTFILES" pull --rebase --autostash
 fi
 
-# 4. Brew bundle
+# 4. Disable Gatekeeper quarantine before installing apps
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+# 5. Brew bundle
 echo "Installing Homebrew packages..."
 brew bundle --file="$DOTFILES/Brewfile"
 
@@ -155,8 +161,3 @@ done
 
 echo ""
 echo "Bootstrap complete! Restart your terminal to apply all changes."
-echo ""
-echo "Manual steps:"
-echo "  - Install NeetoRecord: https://neetorecord.com/neetorecord/download"
-echo "  - Grant Accessibility permissions for: Magnet, Maccy, Raycast, Lunar"
-echo "  - Sign into 1Password, then run: refresh-secrets"
