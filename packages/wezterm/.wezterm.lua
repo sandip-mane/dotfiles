@@ -6,11 +6,12 @@ local config = wezterm.config_builder()
 config.front_end = 'WebGpu'
 config.freetype_load_target = 'Light'
 config.freetype_render_target = 'HorizontalLcd'
-config.font_size = 15.0
+config.font_size = 14.0
 config.line_height = 1.2
-config.font = wezterm.font('Fira Code', { weight = 'Medium' })
+config.font = wezterm.font({ family = "MesloLGS Nerd Font", weight = "DemiLight" })
 config.underline_position = '-4px'
 config.underline_thickness = '1px'
+
 local scheme = wezterm.color.get_builtin_schemes()['Monokai Vivid']
 scheme.tab_bar = {
   background = '#333333',
