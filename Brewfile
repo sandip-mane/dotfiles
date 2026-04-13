@@ -38,7 +38,6 @@ cask "maccy"
 cask "notion"
 cask "numi"
 cask "raycast"
-cask "readdle-spark"
 cask "slack"
 cask "wezterm"
 cask "whatsapp"
@@ -49,3 +48,4 @@ mas "1Password for Safari", id: 1569813296
 mas "Amphetamine", id: 937984704
 mas "Bear", id: 1091189122
 mas "Magnet", id: 441258766
+mas "Spark Classic", id: 1176895641
