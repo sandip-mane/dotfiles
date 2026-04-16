@@ -99,6 +99,28 @@ config.keys = {
   { key = 'DownArrow', mods = 'CMD|OPT', action = act.ActivatePaneDirection 'Down' },
 }
 
+-- Require Cmd to open links (prevents accidental clicks)
+config.mouse_bindings = {
+  -- Disable plain left-click opening links
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'NONE',
+    action = act.CompleteSelection 'PrimarySelection',
+  },
+  -- Cmd+Click opens the link under the cursor
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'CMD',
+    action = act.OpenLinkAtMouseCursor,
+  },
+  -- Suppress the Cmd+Click Down event so it isn't forwarded to the program
+  {
+    event = { Down = { streak = 1, button = 'Left' } },
+    mods = 'CMD',
+    action = act.Nop,
+  },
+}
+
 -- Split Editor Layout: left 40% (two horizontal panes), right 60% (full height)
 -- Keybinding: Cmd+Shift+E
 local function split_editor_layout(window, pane)

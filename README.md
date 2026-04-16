@@ -86,6 +86,7 @@ Sourced automatically by `.zshrc`. Organized by domain:
 | `git/sendpr.sh` | `sendpr` | Create PR with issue linking |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
 | `git/move_project_items.sh` | `move_project_items` | Bulk move GitHub project items |
+| `git/bump_version.sh` | `bump_version` | Trigger a version bump PR and merge it |
 | `neeto/release.sh` | `release` | Create release PR |
 | `neeto/deploy.sh` | `deploy` | Merge and push release |
 | `neeto/hotfix.sh` | `hotfix` | Cherry-pick hotfix release |
