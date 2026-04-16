@@ -27,7 +27,7 @@ cd ~/Work/dotfiles
 - [ ] **Generate secrets** — run `refresh-secrets` to populate `~/.secrets` from 1Password
 - [ ] **Remap Caps Lock to Control** — System Settings → Keyboard → Keyboard Shortcuts → Modifier Keys
 - [ ] **Add Work folder to Finder sidebar** — drag `~/Work` to Favorites
-- [ ] **Sync Bear notes** — run `bearit`
+- [ ] **Sync Bear notes** — run `bearin` to pull notes from GitHub into Bear; `bearout` to push the other way
 - [ ] **Install [NeetoRecord](https://neetorecord.com/neetorecord/download)**
 
 </details>
@@ -82,6 +82,7 @@ Sourced automatically by `.zshrc`. Organized by domain:
 | Script | Command | Description |
 | ------ | ------- | ----------- |
 | `secrets.sh` | `refresh-secrets` | Regenerate ~/.secrets from 1Password |
+| `bear.sh` | `bearin` / `bearout` | Sync Bear notes (GitHub → Bear / Bear → GitHub) |
 | `ai/cldw.sh` | `cldw` | Claude worktree helper |
 | `git/sendpr.sh` | `sendpr` | Create PR with issue linking |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |

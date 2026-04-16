@@ -1,4 +1,4 @@
-bearit() {
+bearin() {
   local repo="$HOME/Work/my-bear-notes"
 
   if [ ! -d "$repo" ]; then
@@ -6,5 +6,10 @@ bearit() {
     git clone https://github.com/sandip-mane/my-bear-notes.git "$repo"
   fi
 
-  "$repo/bear.sh" sync
+  "$repo/bear.sh" import
+}
+
+bearout() {
+  local repo="$HOME/Work/my-bear-notes"
+  "$repo/bear.sh" export
 }
