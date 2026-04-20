@@ -6,7 +6,10 @@
 - While creating branches, use github issue number as prefix when available
   example: `100-login-enhancements`
 - Do not include github issue number in the commit message or PR title
-- Always start pull request description with "closes/fixes {github_issue_number}" whenever it is available
+
+## Github Pull Request Rules
+- Start description with "closes/fixes {github_issue_number}" whenever it is available
+- Keep the description concise
 - When PR is created and changes are pushed, run commitlog and print the output
 
 ## Backend (Rails/Ruby) rules
