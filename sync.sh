@@ -10,8 +10,9 @@ if [ "${SKIP_PULL:-}" != "1" ]; then
   git pull --rebase --autostash
 fi
 
-# Update Homebrew and install new items
+# Update Homebrew and install new items (skip Gatekeeper quarantine on casks)
 echo "Updating Homebrew packages..."
+export HOMEBREW_CASK_OPTS="--no-quarantine"
 brew update
 brew bundle --file="$DOTFILES/Brewfile"
 brew cleanup

@@ -32,11 +32,9 @@ else
   git -C "$DOTFILES" pull --rebase --autostash
 fi
 
-# 4. Disable Gatekeeper quarantine before installing apps
-defaults write com.apple.LaunchServices LSQuarantine -bool false
-
-# 5. Brew bundle
+# 4. Install Homebrew packages (skip Gatekeeper quarantine on casks)
 echo "Installing Homebrew packages..."
+export HOMEBREW_CASK_OPTS="--no-quarantine"
 brew bundle --file="$DOTFILES/Brewfile"
 
 # 5. VS Code settings

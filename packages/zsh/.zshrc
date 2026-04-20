@@ -55,6 +55,9 @@ done
 # Init packages
 eval "$(atuin init zsh --disable-up-arrow)"
 
+# Skip Gatekeeper quarantine for Homebrew cask installs
+export HOMEBREW_CASK_OPTS="--no-quarantine"
+
 # PATH
 export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
 export PATH="$HOME/.local/share/mise/installs/node/22.13.1/lib/node_modules/corepack/shims:$PATH"
