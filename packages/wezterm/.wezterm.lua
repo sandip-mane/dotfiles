@@ -8,7 +8,8 @@ config.freetype_load_target = 'Light'
 config.freetype_render_target = 'HorizontalLcd'
 config.font_size = 14.0
 config.line_height = 1.2
-config.font = wezterm.font('Fira Code', { weight = 'Medium' })
+config.cell_width = 1.1
+config.font = wezterm.font('MesloLGS NF')
 config.underline_position = '-4px'
 config.underline_thickness = '1px'
 
