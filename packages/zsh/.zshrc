@@ -63,6 +63,9 @@ export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
 export PATH="$HOME/.local/share/mise/installs/node/22.13.1/lib/node_modules/corepack/shims:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
+# For claude to refer to ruby from mise and not system ruby
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
 # mise setup (fast, compatible with Powerlevel10k)
 eval "$(mise activate zsh --shims)"
 source <(mise hook-env)
