@@ -10,6 +10,8 @@ config.font_size = 14.0
 config.line_height = 1.2
 config.cell_width = 1.1
 config.font = wezterm.font('MesloLGS NF')
+config.allow_square_glyphs_to_overflow_width = 'Always'
+config.unicode_version = 14
 config.underline_position = '-4px'
 config.underline_thickness = '1px'
 
