@@ -40,6 +40,20 @@ config.inactive_pane_hsb = {
   brightness = 0.3,
 }
 
+-- Scrollback
+config.scrollback_lines = 100000
+config.enable_scroll_bar = true
+config.min_scroll_bar_height = '2cell'
+config.colors = {
+  scrollbar_thumb = '#888888',
+}
+config.window_padding = {
+  left = 0,
+  right = 12,
+  top = 0,
+  bottom = 0,
+}
+
 -- Tabs
 config.window_decorations = 'RESIZE'
 config.use_fancy_tab_bar = true
