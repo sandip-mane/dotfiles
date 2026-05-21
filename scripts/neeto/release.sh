@@ -58,11 +58,37 @@ release() {
   show_progress "$pretext" 5 0 "${release_steps[@]}"
 
   # Step 5: Merge main into release branch (prefer main's changes to override production)
-  if ! git merge origin/main -X theirs --no-edit >/dev/null 2>&1; then
-    show_progress "$pretext" 5 1 "${release_steps[@]}"
-    echo "❌ Failed to merge main into release branch"
-    echo "⚠️  You may need to resolve conflicts manually"
-    return 1
+  local merge_output
+  merge_output=$(git merge origin/main -X theirs --no-edit 2>&1)
+  if [ $? -ne 0 ]; then
+    # When production and main share no common ancestor, git falls back to a
+    # 2-way merge that cannot distinguish "deleted in main" from "never existed
+    # in main", so files deleted on main are wrongly retained on the release.
+    # Workaround: merge with --allow-unrelated-histories, then snap the tree to
+    # match origin/main exactly while keeping the merge commit's parentage.
+    if echo "$merge_output" | grep -q "refusing to merge unrelated histories"; then
+      if ! git merge origin/main -X theirs --no-edit --allow-unrelated-histories >/dev/null 2>&1; then
+        show_progress "$pretext" 5 1 "${release_steps[@]}"
+        echo "❌ Failed to merge main into release branch (unrelated histories)"
+        echo "⚠️  You may need to resolve conflicts manually"
+        return 1
+      fi
+      if ! git read-tree -u --reset origin/main >/dev/null 2>&1; then
+        show_progress "$pretext" 5 1 "${release_steps[@]}"
+        echo "❌ Failed to sync release tree to main"
+        return 1
+      fi
+      if ! git commit --amend --no-edit --allow-empty >/dev/null 2>&1; then
+        show_progress "$pretext" 5 1 "${release_steps[@]}"
+        echo "❌ Failed to amend merge commit with synced tree"
+        return 1
+      fi
+    else
+      show_progress "$pretext" 5 1 "${release_steps[@]}"
+      echo "❌ Failed to merge main into release branch"
+      echo "⚠️  You may need to resolve conflicts manually"
+      return 1
+    fi
   fi
   show_progress "$pretext" 6 0 "${release_steps[@]}"
 
