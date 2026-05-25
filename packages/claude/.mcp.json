@@ -16,7 +16,7 @@
         "-e", "HONEYBADGER_PERSONAL_AUTH_TOKEN",
         "ghcr.io/honeybadger-io/honeybadger-mcp-server"
       ],
-      "env": { "HONEYBADGER_PERSONAL_AUTH_TOKEN": "${HONEYBADGER_API_KEY}" }
+      "env": { "HONEYBADGER_PERSONAL_AUTH_TOKEN": "${HONEYBADGER_AUTH_TOKEN}" }
     },
     "context7": {
       "command": "npx",

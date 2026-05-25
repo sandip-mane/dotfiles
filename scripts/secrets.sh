@@ -21,7 +21,7 @@ refresh-secrets() {
 
   # Claude MCP servers
   _update_secret GITHUB_TOKEN "op://Employee/Github Personal Access Token/credential"
-  _update_secret HONEYBADGER_API_KEY "op://Shared accounts - P3/Honeybadger API key/credential"
+  _update_secret HONEYBADGER_AUTH_TOKEN "op://Shared accounts - P3/Honeybadger API key/credential"
 
   source ~/.secrets
   echo "Secrets refreshed and loaded."
