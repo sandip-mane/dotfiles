@@ -8,7 +8,8 @@
       "Glob",
       "Grep",
       "mcp__github__*",
-      "mcp__honeybadger__*"
+      "mcp__honeybadger__*",
+      "Skill(superpowers:test-driven-development)"
     ]
   },
   "hooks": {
