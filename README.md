@@ -52,7 +52,6 @@ Each folder mirrors `$HOME` and is symlinked via `stow`.
 | `p10k`   | `.p10k.zsh` — Powerlevel10k    |
 | `git`    | `.gitconfig`                   |
 | `vim`    | `.vimrc`                       |
-| `wezterm`| `.wezterm.lua` — terminal      |
 | `ssh`    | `.ssh/config`                  |
 | `mise`   | mise runtime versions          |
 | `gh`     | GitHub CLI config              |

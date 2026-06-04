@@ -42,7 +42,6 @@ cask "numi"
 cask "raycast"
 cask "slack"
 cask "visual-studio-code"
-cask "wezterm"
 cask "whatsapp"
 cask "zoom"
 

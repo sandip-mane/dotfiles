@@ -7,6 +7,11 @@ release() {
     BASE_BRANCH=stable
   fi
 
+  # NOTE on SKIP_INSTALL_COMMANDS_AFTER_PULL=true prefix below: husky
+  # post-checkout/post-merge auto-runs `yarn install` (and `bundle install`)
+  # when lockfiles differ, which dirties the working tree mid-flow. The helper
+  # at .husky/helpers/run_install_commands.sh honors this env var.
+
   # Define steps array
   local release_steps=(
     "Switch to production branch"
@@ -22,11 +27,23 @@ release() {
   # Create pretext for this operation
   local pretext="Release project: $REPO_NAME\nTarget branch: $BASE_BRANCH\nStrategy: Merge main into production-based release"
 
+  # Pre-flight: refuse to run with a dirty working tree. A later `git merge`
+  # would abort with "Your local changes would be overwritten" and leave the
+  # repo on the release branch in a half-done state.
+  if ! git diff --quiet || ! git diff --cached --quiet; then
+    echo "❌ Cannot run release: uncommitted changes detected"
+    echo ""
+    git status --short
+    echo ""
+    echo "⚠️  Commit, stash, or discard these changes before running release."
+    return 1
+  fi
+
   # Show initial status
   show_progress "$pretext" 1 0 "${release_steps[@]}"
 
   # Step 1: Switch to production branch
-  if ! gco $BASE_BRANCH >/dev/null 2>&1; then
+  if ! SKIP_INSTALL_COMMANDS_AFTER_PULL=true gco $BASE_BRANCH >/dev/null 2>&1; then
     show_progress "$pretext" 1 1 "${release_steps[@]}"
     echo "❌ Failed to switch to $BASE_BRANCH branch"
     return 1
@@ -34,7 +51,7 @@ release() {
   show_progress "$pretext" 2 0 "${release_steps[@]}"
 
   # Step 2: Pull latest changes from production
-  if ! gl >/dev/null 2>&1; then
+  if ! SKIP_INSTALL_COMMANDS_AFTER_PULL=true gl >/dev/null 2>&1; then
     show_progress "$pretext" 2 1 "${release_steps[@]}"
     echo "❌ Failed to pull latest changes from $BASE_BRANCH"
     return 1
@@ -50,7 +67,7 @@ release() {
   show_progress "$pretext" 4 0 "${release_steps[@]}"
 
   # Step 4: Create release branch from production
-  if ! gcb $RELEASE_BRANCH >/dev/null 2>&1 && ! gco $RELEASE_BRANCH >/dev/null 2>&1; then
+  if ! SKIP_INSTALL_COMMANDS_AFTER_PULL=true gcb $RELEASE_BRANCH >/dev/null 2>&1 && ! SKIP_INSTALL_COMMANDS_AFTER_PULL=true gco $RELEASE_BRANCH >/dev/null 2>&1; then
     show_progress "$pretext" 4 1 "${release_steps[@]}"
     echo "❌ Failed to create/switch to release branch: $RELEASE_BRANCH"
     return 1
@@ -59,7 +76,7 @@ release() {
 
   # Step 5: Merge main into release branch (prefer main's changes to override production)
   local merge_output
-  merge_output=$(git merge origin/main -X theirs --no-edit 2>&1)
+  merge_output=$(SKIP_INSTALL_COMMANDS_AFTER_PULL=true git merge origin/main -X theirs --no-edit 2>&1)
   if [ $? -ne 0 ]; then
     # When production and main share no common ancestor, git falls back to a
     # 2-way merge that cannot distinguish "deleted in main" from "never existed
@@ -67,7 +84,7 @@ release() {
     # Workaround: merge with --allow-unrelated-histories, then snap the tree to
     # match origin/main exactly while keeping the merge commit's parentage.
     if echo "$merge_output" | grep -q "refusing to merge unrelated histories"; then
-      if ! git merge origin/main -X theirs --no-edit --allow-unrelated-histories >/dev/null 2>&1; then
+      if ! SKIP_INSTALL_COMMANDS_AFTER_PULL=true git merge origin/main -X theirs --no-edit --allow-unrelated-histories >/dev/null 2>&1; then
         show_progress "$pretext" 5 1 "${release_steps[@]}"
         echo "❌ Failed to merge main into release branch (unrelated histories)"
         echo "⚠️  You may need to resolve conflicts manually"
@@ -86,6 +103,9 @@ release() {
     else
       show_progress "$pretext" 5 1 "${release_steps[@]}"
       echo "❌ Failed to merge main into release branch"
+      echo ""
+      echo "$merge_output"
+      echo ""
       echo "⚠️  You may need to resolve conflicts manually"
       return 1
     fi

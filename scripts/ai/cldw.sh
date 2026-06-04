@@ -46,9 +46,6 @@ cldw() {
         end tell
 EOF
       ;;
-    WezTerm)
-      wezterm cli split-pane --right --cwd "$abs_worktree_path" >/dev/null
-      ;;
     *)
       echo "Warning: Unsupported terminal ($TERM_PROGRAM); skipping split."
       ;;

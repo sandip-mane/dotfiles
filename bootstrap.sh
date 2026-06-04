@@ -92,7 +92,7 @@ fi
 
 # 8. Backup existing dotfiles and stow
 echo "Stowing dotfiles..."
-for f in .zshrc .p10k.zsh .gitconfig .vimrc .wezterm.lua .mcp.json; do
+for f in .zshrc .p10k.zsh .gitconfig .vimrc .mcp.json; do
   if [ -f "$HOME/$f" ] && [ ! -L "$HOME/$f" ]; then
     echo "  Backing up ~/$f"
     mv "$HOME/$f" "$HOME/$f.backup.$(date +%s)"
@@ -167,7 +167,7 @@ fi
 
 # 13. Add login items
 echo "Adding login items..."
-for app in "Docker" "Calendr" "1Password" "Maccy" "Lunar" "Magnet"; do
+for app in "Docker" "Calendr" "1Password" "Maccy" "Lunar" "Magnet" "noTunes"; do
   osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"/Applications/$app.app\", hidden:false}" 2>/dev/null || true
 done
 
