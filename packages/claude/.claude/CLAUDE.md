@@ -21,5 +21,4 @@
 ## Backend (Rails/Ruby) rules
 - For a new_feature/enhancement ensure proper unit test coverage is added
 - For a bug fix, reproduce the bug in an unit test before fixing
-
-
+- While adding unit test cases, do not add the tests with a new public block after a private block, all the tests should be added before the existing private block
