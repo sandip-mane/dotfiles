@@ -1,4 +1,5 @@
 # Taps
+tap "neetozone/homebrew-tap"
 tap "tunneltodev/tap"
 
 # CLI tools
@@ -10,6 +11,7 @@ brew "imagemagick"
 brew "libyaml"
 brew "mas"
 brew "mise"
+brew "neetozone/homebrew-tap/neetodeploy"
 brew "node"
 brew "opensearch"
 brew "postgresql@18", restart_service: :changed
