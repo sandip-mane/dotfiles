@@ -3,6 +3,7 @@
 ## General Rules
 - When asked to plan, do NOT to create design spec docs unless the work is multi-commit or a big feature.
 - Always ask for confirmation before committing, I prefer to review the code before its committed.
+- Keep the comments concise and to the point.
 
 ## Git Rules
 - While creating branches, use github issue number as prefix when available
@@ -10,7 +11,7 @@
 - Do not include github issue number in the commit message or PR title
 
 ## Github Pull Request Rules
-- Start description with "closes/fixes {github_issue_number}" whenever it is available
+- Start description with "closes/fixes #{github_issue_number}" whenever it is available
 - Keep the description concise
 - When PR is created and changes are pushed, run commitlog and print the output
 - If the repo name ends with "-nano" 
