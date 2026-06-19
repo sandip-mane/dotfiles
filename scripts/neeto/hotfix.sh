@@ -7,6 +7,23 @@ hotfix() {
     BASE_BRANCH=stable
   fi
 
+  # NOTE on SKIP_INSTALL_COMMANDS_AFTER_PULL=true prefix below: husky
+  # post-checkout/post-merge auto-runs `yarn install` (and `bundle install`)
+  # when lockfiles differ, which dirties the working tree mid-flow. The helper
+  # at .husky/helpers/run_install_commands.sh honors this env var.
+
+  # Pre-flight: refuse to run with a dirty working tree. A later cherry-pick
+  # would abort with "Your local changes would be overwritten" and leave the
+  # repo on the hotfix branch in a half-done state.
+  if ! git diff --quiet || ! git diff --cached --quiet; then
+    echo "❌ Cannot run hotfix: uncommitted changes detected"
+    echo ""
+    git status --short
+    echo ""
+    echo "⚠️  Commit, stash, or discard these changes before running hotfix."
+    return 1
+  fi
+
   local commit_hashes=()
 
   prompt_read() {
@@ -22,6 +39,11 @@ hotfix() {
 
   # Try to use interactive picker (fzf) by default, fall back to manual entry if not available
   if command -v fzf >/dev/null 2>&1; then
+    # Refresh remote refs so the picker reflects the latest commits.
+    if ! git fetch origin $BASE_BRANCH main >/dev/null 2>&1; then
+      echo "❌ Failed to fetch latest refs from origin"
+      return 1
+    fi
     # Use remote refs to avoid missing local branches
     picks=$(git log --oneline origin/$BASE_BRANCH..origin/main \
       | fzf --multi \
@@ -74,21 +96,21 @@ hotfix() {
   local pretext="Hotfix release: $REPO_NAME\nTarget branch: $BASE_BRANCH\nCherry-picked commits: ${commit_hashes[*]}"
   show_progress "$pretext" 1 0 "${hotfix_steps[@]}"
 
-  if ! gco $BASE_BRANCH >/dev/null 2>&1; then
+  if ! SKIP_INSTALL_COMMANDS_AFTER_PULL=true gco $BASE_BRANCH >/dev/null 2>&1; then
     show_progress "$pretext" 1 1 "${hotfix_steps[@]}"
     echo "❌ Failed to switch to $BASE_BRANCH"
     return 1
   fi
   show_progress "$pretext" 2 0 "${hotfix_steps[@]}"
 
-  if ! gl >/dev/null 2>&1; then
+  if ! SKIP_INSTALL_COMMANDS_AFTER_PULL=true gl >/dev/null 2>&1; then
     show_progress "$pretext" 2 1 "${hotfix_steps[@]}"
     echo "❌ Failed to pull latest changes"
     return 1
   fi
   show_progress "$pretext" 3 0 "${hotfix_steps[@]}"
 
-  if ! gcb $RELEASE_BRANCH >/dev/null 2>&1 && ! gco $RELEASE_BRANCH >/dev/null 2>&1; then
+  if ! SKIP_INSTALL_COMMANDS_AFTER_PULL=true gcb $RELEASE_BRANCH >/dev/null 2>&1 && ! SKIP_INSTALL_COMMANDS_AFTER_PULL=true gco $RELEASE_BRANCH >/dev/null 2>&1; then
     show_progress "$pretext" 3 1 "${hotfix_steps[@]}"
     echo "❌ Failed to create/switch to release branch: $RELEASE_BRANCH"
     return 1
