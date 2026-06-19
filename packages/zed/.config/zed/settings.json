@@ -14,7 +14,7 @@
   },
   "cli_default_open_behavior": "new_window",
   "terminal": {
-    "font_size": 15.0
+    "font_size": 14.0
   },
   "autosave": "on_focus_change",
   "project_panel": {
