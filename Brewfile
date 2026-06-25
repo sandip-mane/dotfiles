@@ -43,8 +43,8 @@ cask "notunes"
 cask "numi"
 cask "raycast"
 cask "slack"
-cask "visual-studio-code"
 cask "whatsapp"
+cask "zed"
 cask "zoom"
 
 # Mac App Store
