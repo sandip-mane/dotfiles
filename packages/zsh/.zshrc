@@ -63,9 +63,9 @@ export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
 export PATH="$HOME/.local/share/mise/installs/node/22.13.1/lib/node_modules/corepack/shims:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
-# For claude to refer to ruby from mise and not system ruby
-export PATH="$HOME/.local/share/mise/shims:$PATH"
-
-# mise setup (fast, compatible with Powerlevel10k)
+# mise setup (must run after other PATH modifications).
+# Use --shims so the shims dir stays first in PATH: this keeps `mise exec`
+# and binstubs (#!/usr/bin/env ruby) resolving mise's ruby instead of system
+# ruby. Do NOT add `mise hook-env` here — it prepends tool install dirs that
+# shadow the shims and trip mise's "tool paths not first" warning.
 eval "$(mise activate zsh --shims)"
-source <(mise hook-env)

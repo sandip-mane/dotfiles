@@ -6,7 +6,7 @@ startup() {
   open -a "Brave Browser"
   open -a "Spark"
   open -a "Slack"
-  open -a "Visual Studio Code"
+  open -a "Zed"
   open -a "Bear"
   open -a "Docker"
 
