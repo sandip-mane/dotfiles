@@ -57,6 +57,12 @@
           "hover": true,
           "documentSymbols": true,
           "formatting": true
+        },
+        "addonSettings": {
+          // Silence the "Migrations are pending" toasts from ruby-lsp-rails
+          "Ruby LSP Rails": {
+            "enablePendingMigrationsPrompt": false
+          }
         }
       }
     }
