@@ -17,6 +17,14 @@ brew update
 brew bundle --file="$DOTFILES/Brewfile"
 brew cleanup
 
+# --no-quarantine above is only honored on fresh cask installs, not upgrades,
+# so updated apps get re-quarantined. Strip the top-level attr (the one
+# Gatekeeper checks) so it stops prompting. Needs App Management permission
+# for this terminal, which Homebrew cask installs already require.
+for app in /Applications/*.app; do
+  xattr -d com.apple.quarantine "$app" 2>/dev/null || true
+done
+
 # Re-stow all packages
 echo "Re-stowing packages..."
 for pkg in packages/*/; do
