@@ -41,8 +41,12 @@ alias b="bundle exec"
 alias t="rails test"
 alias gap="git add -p"
 alias repo="gh repo view --web"
-alias ndlogs="neetodeploy logs"
-alias ndshell="neetodeploy exec"
+# Ensure Teleport (NeetoDeploy VPN) login, only when not already active
+_nd_ensure_login() {
+  tsh status &>/dev/null || tsh login --proxy=teleport.neetodeploy.com:443 --auth=github
+}
+ndlogs() { _nd_ensure_login && neetodeploy logs "$@"; }
+ndshell() { _nd_ensure_login && neetodeploy exec "$@"; }
 alias gitclean="git branch | grep -v \* | xargs git branch -D"
 alias mec="ga . && git commit -m 'Minor enhancement' && ggpnp"
 alias dotsync="~/Work/dotfiles/sync.sh"
