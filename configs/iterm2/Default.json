@@ -183,6 +183,11 @@
       "BM Growl": true,
       "Prompt Before Closing 2": false,
       "Command": "",
+      "Semantic History": {
+        "action": "editor",
+        "editor": "dev.zed.zed",
+        "text": ""
+      },
       "AWDS Tab Option": "Recycle",
       "Selected Text Color": {
         "Red Component": 0,
