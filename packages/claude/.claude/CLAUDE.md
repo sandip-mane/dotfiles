@@ -3,7 +3,7 @@
 ## General Rules
 - When asked to plan, do NOT to create design spec docs unless the work is multi-commit or a big feature.
 - Always ask for confirmation before committing, I prefer to review the code before its committed.
-- Keep the comments concise and to the point.
+- Use minimal to no code comments. Prefer self-explanatory code; only add a comment when the "why" is genuinely non-obvious, and keep it to a single concise line.
 
 ## Git Rules
 - While creating branches, use github issue number as prefix when available
