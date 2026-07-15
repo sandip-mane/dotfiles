@@ -37,42 +37,13 @@ echo "Installing Homebrew packages..."
 export HOMEBREW_CASK_OPTS="--no-quarantine"
 brew bundle --file="$DOTFILES/Brewfile"
 
-# 5. VS Code settings
-if command -v code &>/dev/null && [ -f "$DOTFILES/configs/vscode/sandip.code-profile" ]; then
-  echo "Applying VS Code settings..."
-  PROFILE_JSON=$(cat "$DOTFILES/configs/vscode/sandip.code-profile")
-  VSCODE_USER_DIR="$HOME/Library/Application Support/Code/User"
-
-  # Find target: existing profile dir or base User dir
-  VSCODE_ACTIVE_PROFILE=$(ls "$VSCODE_USER_DIR/profiles" 2>/dev/null | head -1 || true)
-  if [ -n "$VSCODE_ACTIVE_PROFILE" ]; then
-    VSCODE_TARGET="$VSCODE_USER_DIR/profiles/$VSCODE_ACTIVE_PROFILE"
-  else
-    VSCODE_TARGET="$VSCODE_USER_DIR"
-  fi
-  mkdir -p "$VSCODE_TARGET"
-
-  # Extract settings and keybindings from profile and write as files
-  echo "$PROFILE_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.loads(d['settings']) if isinstance(d['settings'],str) else d['settings'])" > /dev/null 2>&1 && \
-  echo "$PROFILE_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps(json.loads(d['settings']),indent=4))" > "$VSCODE_TARGET/settings.json" && \
-  echo "$PROFILE_JSON" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps(json.loads(d['keybindings']),indent=4))" > "$VSCODE_TARGET/keybindings.json"
-
-  # Install extensions from profile
-  echo "$PROFILE_JSON" | python3 -c "
-import sys,json
-d=json.load(sys.stdin)
-for ext in json.loads(d['extensions']):
-    print(ext['identifier']['id'])
-" | xargs -L 1 code --install-extension 2>/dev/null || true
-fi
-
-# 6. Oh My Zsh
+# 5. Oh My Zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   echo "Installing Oh My Zsh..."
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
-# 7. Oh My Zsh plugins and theme
+# 6. Oh My Zsh plugins and theme
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
 if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
@@ -90,7 +61,7 @@ if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
   git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 fi
 
-# 8. Backup existing dotfiles and stow
+# 7. Backup existing dotfiles and stow
 echo "Stowing dotfiles..."
 for f in .zshrc .p10k.zsh .gitconfig .vimrc .mcp.json; do
   if [ -f "$HOME/$f" ] && [ ! -L "$HOME/$f" ]; then
@@ -114,14 +85,14 @@ for pkg in packages/*/; do
 done
 git -C "$DOTFILES" checkout -- packages/
 
-# 9. Install mise runtimes
+# 8. Install mise runtimes
 if command -v mise &>/dev/null; then
   echo "Installing mise runtimes..."
   eval "$(mise activate bash)"
   mise install --yes
 fi
 
-# 10. macOS and app defaults
+# 9. macOS and app defaults
 echo "Applying macOS defaults..."
 source "$DOTFILES/macos.sh"
 source "$DOTFILES/configs/calendr/defaults.sh"
@@ -143,7 +114,7 @@ if compgen -G "$DOTFILES/configs/iterm2/*.json" > /dev/null; then
   fi
 fi
 
-# 11. Set default shell to Homebrew zsh
+# 10. Set default shell to Homebrew zsh
 BREW_ZSH="/opt/homebrew/bin/zsh"
 if [ -x "$BREW_ZSH" ]; then
   if ! grep -q "$BREW_ZSH" /etc/shells; then
@@ -156,7 +127,7 @@ if [ -x "$BREW_ZSH" ]; then
   fi
 fi
 
-# 12. Import Raycast config
+# 11. Import Raycast config
 if [ -f "$DOTFILES/configs/raycast/config.rayconfig" ]; then
   echo "Opening Raycast for config import..."
   open -a "Raycast"
@@ -165,7 +136,7 @@ if [ -f "$DOTFILES/configs/raycast/config.rayconfig" ]; then
   open "$DOTFILES/configs/raycast/config.rayconfig"
 fi
 
-# 13. Add login items
+# 12. Add login items
 echo "Adding login items..."
 for app in "Docker" "Calendr" "1Password" "Maccy" "Lunar" "Magnet" "noTunes"; do
   osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"/Applications/$app.app\", hidden:false}" 2>/dev/null || true

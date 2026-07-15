@@ -64,7 +64,6 @@ Each folder mirrors `$HOME` and is symlinked via `stow`.
 | App            | Config                          |
 | -------------- | ------------------------------- |
 | macOS          | `macos.sh` — sane defaults for macOS |
-| VS Code        | `configs/vscode/sandip.code-profile`    |
 | Raycast        | `configs/raycast/config.rayconfig`      |
 | Calendr        | `configs/calendr/defaults.sh`           |
 | Maccy          | `configs/maccy/defaults.sh`             |

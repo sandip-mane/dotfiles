@@ -5,12 +5,7 @@ fi
 
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set Oh My Zsh theme conditionally
-if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  ZSH_THEME=""  # Disable Powerlevel10k for VS Code / Cursor
-else
-  ZSH_THEME="powerlevel10k/powerlevel10k"
-fi
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 plugins=(
   git
@@ -24,13 +19,7 @@ ZSHZ_CMD="j"
 
 source $ZSH/oh-my-zsh.sh
 
-# Use a minimal prompt in VS Code / Cursor to avoid command detection issues
-if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  PROMPT='%n@%m:%~%# '
-  RPROMPT=''
-else
-  [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
-fi
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 # Load secrets (API keys, tokens)
 [[ -f ~/.secrets ]] && source ~/.secrets
