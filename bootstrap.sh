@@ -138,7 +138,7 @@ fi
 
 # 12. Add login items
 echo "Adding login items..."
-for app in "Docker" "Calendr" "1Password" "Maccy" "Lunar" "Magnet" "noTunes"; do
+for app in "Docker" "Calendr" "1Password" "Maccy" "Lunar" "Magnet" "noTunes" "Amphetamine"; do
   osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"/Applications/$app.app\", hidden:false}" 2>/dev/null || true
 done
 
