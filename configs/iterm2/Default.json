@@ -171,7 +171,7 @@
         "Green Component": 0.09803921729326248
       },
       "Ambiguous Double Width": false,
-      "Option Key Sends": 0,
+      "Option Key Sends": 2,
       "Ansi 3 Color": {
         "Red Component": 0.7805864810943604,
         "Color Space": "sRGB",

@@ -24,6 +24,9 @@ source $ZSH/oh-my-zsh.sh
 # Load secrets (API keys, tokens)
 [[ -f ~/.secrets ]] && source ~/.secrets
 
+# Stop word deletion/motion at punctuation, like a text editor
+WORDCHARS=''
+
 # Aliases
 alias bi="bundle install"
 alias b="bundle exec"
