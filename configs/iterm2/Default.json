@@ -172,6 +172,16 @@
       },
       "Ambiguous Double Width": false,
       "Option Key Sends": 2,
+      "Keyboard Map": {
+        "0x7f-0x100000": {
+          "Action": 11,
+          "Text": "0x15"
+        },
+        "0x7a-0x100000": {
+          "Action": 11,
+          "Text": "0x1f"
+        }
+      },
       "Ansi 3 Color": {
         "Red Component": 0.7805864810943604,
         "Color Space": "sRGB",

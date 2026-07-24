@@ -27,6 +27,15 @@ source $ZSH/oh-my-zsh.sh
 # Stop word deletion/motion at punctuation, like a text editor
 WORDCHARS=''
 
+# Opt+left/right moves by word (Esc+arrow and xterm modified-arrow forms)
+bindkey '^[^[[D' backward-word
+bindkey '^[^[[C' forward-word
+bindkey '^[[1;3D' backward-word
+bindkey '^[[1;3C' forward-word
+
+# Cmd+backspace (iTerm2 sends ^U) deletes to line start, like a text editor
+bindkey '^U' backward-kill-line
+
 # Aliases
 alias bi="bundle install"
 alias b="bundle exec"
