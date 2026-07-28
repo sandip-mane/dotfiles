@@ -5,6 +5,12 @@
 - Always ask for confirmation before committing, I prefer to review the code before its committed.
 - Use minimal to no code comments. Prefer self-explanatory code; only add a comment when the "why" is genuinely non-obvious, and keep it to a single concise line. This overrides matching surrounding style — do NOT match the comment density of existing verbose code; new comments stay minimal even in a heavily-commented file.
 
+## Production Access Rules
+- Read-only production scripts/queries may run WITHOUT approval: SQL SELECTs via `neetodeploy pg cli`, and rails runner scripts that only read — ActiveRecord finders/count/pluck, inspecting records, read-only GET/list calls to external APIs.
+- Anything else NEEDS my explicit approval of the exact script before running — show me the script and wait for a yes. Mutating means: any DB write (create/save/update/destroy/update_all, raw DML/DDL), enqueuing jobs, sending emails/notifications/webhooks, external API calls that create/modify/delete remote resources, or invoking app service objects/jobs/mailers (business logic may mutate internally even when it sounds read-only).
+- When unsure whether a script is fully read-only, treat it as mutating and ask.
+- Approval for one production script does NOT carry over to the next one.
+
 ## Git Rules
 - While creating branches, use github issue number as prefix when available
   example: `100-login-enhancements`
