@@ -10,6 +10,10 @@
 - Anything else NEEDS my explicit approval of the exact script before running — show me the script and wait for a yes. Mutating means: any DB write (create/save/update/destroy/update_all, raw DML/DDL), enqueuing jobs, sending emails/notifications/webhooks, external API calls that create/modify/delete remote resources, or invoking app service objects/jobs/mailers (business logic may mutate internally even when it sounds read-only).
 - When unsure whether a script is fully read-only, treat it as mutating and ask.
 - Approval for one production script does NOT carry over to the next one.
+- When a `neetodeploy` command is blocked by expired auth, re-authenticate WITHOUT asking, then re-run the blocked command. Both only re-authenticate via browser SSO and mutate nothing. There are two independent layers, so check for both:
+  - Teleport/VPN (`To use the NeetoDeploy CLI you must be authenticated to the NeetoDeploy VPN`) → `tsh login --proxy=teleport.neetodeploy.com:443 --auth=github`
+  - NeetoDeploy API session (`API error (401): Couldn't find session`) → `neetodeploy login`
+  This does not grant approval for the underlying script — a mutating script still needs its own explicit approval.
 
 ## Git Rules
 - While creating branches, use github issue number as prefix when available
