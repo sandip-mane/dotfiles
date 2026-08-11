@@ -61,4 +61,14 @@ if compgen -G "$DOTFILES/configs/iterm2/*.json" > /dev/null; then
   fi
 fi
 
+if [ -f "$DOTFILES/configs/muxy/ghostty.conf" ]; then
+  MUXY_DIR="$HOME/Library/Application Support/Muxy"
+  GHOSTTY_THEMES="$HOME/.config/ghostty/themes"
+  mkdir -p "$MUXY_DIR" "$GHOSTTY_THEMES"
+  ln -sfn "$DOTFILES/configs/muxy/ghostty.conf" "$MUXY_DIR/ghostty.conf"
+  for f in "$DOTFILES"/configs/muxy/themes/*; do
+    ln -sfn "$f" "$GHOSTTY_THEMES/$(basename "$f")"
+  done
+fi
+
 echo "Dotfiles synced."

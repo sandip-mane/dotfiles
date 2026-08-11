@@ -68,6 +68,8 @@ Each folder mirrors `$HOME` and is symlinked via `stow`.
 | Calendr        | `configs/calendr/defaults.sh`           |
 | Maccy          | `configs/maccy/defaults.sh`             |
 | Mac Mouse Fix  | `configs/mac-mouse-fix/config.plist`    |
+| iTerm2         | `configs/iterm2/Default.json`           |
+| Muxy           | `configs/muxy/ghostty.conf` + `configs/muxy/themes/` |
 
 ### Packages & Apps
 
