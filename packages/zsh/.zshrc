@@ -49,10 +49,11 @@ _nd_ensure_login() {
 nd() { _nd_ensure_login && neetodeploy "$@"; }
 alias gitclean="git branch | grep -v \* | xargs git branch -D"
 alias mec="ga . && git commit -m 'Minor enhancement' && ggpnp"
-alias dotsync="~/Work/dotfiles/sync.sh"
+export DOTFILES="${$(readlink -f ~/.zshrc):h:h:h}"
+alias dotsync="$DOTFILES/sync.sh"
 
 # Load all scripts from dotfiles repo
-for script in ~/Work/dotfiles/scripts/**/*.sh; do
+for script in $DOTFILES/scripts/**/*.sh; do
   [ -e "$script" ] && source "$script"
 done
 

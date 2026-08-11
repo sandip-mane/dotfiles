@@ -11,8 +11,8 @@ curl -fsSL https://raw.githubusercontent.com/sandip-mane/dotfiles/main/bootstrap
 Or clone and run locally:
 
 ```bash
-git clone https://github.com/sandip-mane/dotfiles.git ~/Work/dotfiles
-cd ~/Work/dotfiles
+git clone https://github.com/sandip-mane/dotfiles.git ~/Work/sandip-mane/dotfiles
+cd ~/Work/sandip-mane/dotfiles
 ./bootstrap.sh
 ```
 

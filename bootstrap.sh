@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-DOTFILES="$HOME/Work/dotfiles"
+DOTFILES="${DOTFILES:-$HOME/Work/sandip-mane/dotfiles}"
 
 # Prevent sleep during bootstrap
 caffeinate -i -w $$ &
