@@ -22,6 +22,52 @@
             "command": "afplay /System/Library/Sounds/Glass.aiff"
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/sandip/Library/Application Support/Muxy/hooks/muxy-claude-hook.sh' notification # muxy-notification-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/sandip/Library/Application Support/Muxy/hooks/muxy-claude-hook.sh' permission-request # muxy-notification-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/sandip/Library/Application Support/Muxy/hooks/muxy-claude-hook.sh' pre-tool-use # muxy-notification-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/sandip/Library/Application Support/Muxy/hooks/muxy-claude-hook.sh' session-end # muxy-notification-hook",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "Stop": [
@@ -32,6 +78,40 @@
             "command": "afplay /System/Library/Sounds/Hero.aiff"
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/sandip/Library/Application Support/Muxy/hooks/muxy-claude-hook.sh' stop # muxy-notification-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/sandip/Library/Application Support/Muxy/hooks/muxy-claude-hook.sh' stop-failure # muxy-notification-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/sandip/Library/Application Support/Muxy/hooks/muxy-claude-hook.sh' user-prompt-submit # muxy-notification-hook",
+            "timeout": 10
+          }
+        ]
       }
     ]
   },
@@ -40,9 +120,14 @@
     "command": "bash \"$HOME/.claude/statusline.sh\""
   },
   "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "ruby-lsp@claude-plugins-official": true
+    "ruby-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
   },
+  "enabledMcpjsonServers": [
+    "github",
+    "honeybadger",
+    "context7"
+  ],
   "tui": "default",
   "voice": {
     "enabled": true,
