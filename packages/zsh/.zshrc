@@ -42,6 +42,8 @@ alias b="bundle exec"
 alias t="rails test"
 alias gap="git add -p"
 alias repo="gh repo view --web"
+alias launch="./bin/launch"
+alias setup="./bin/setup"
 # Ensure Teleport (NeetoDeploy VPN) login, only when not already active
 _nd_ensure_login() {
   tsh status &>/dev/null || tsh login --proxy=teleport.neetodeploy.com:443 --auth=github
