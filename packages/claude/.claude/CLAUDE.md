@@ -39,6 +39,11 @@
   - Add the tag "patch"
   - If JS changes are made, add "frontend" tag
   - If ruby changes are made, add "backend" tag
+- If the repo name contains "cli", add the release label matching the change
+  - "patch" for bug fixes and backward compatible internal changes
+  - "minor" for new commands, flags or other backward compatible features
+  - "major" for breaking changes
+  - Ask me which one to use when the change does not clearly fall into one
 
 ## Backend (Rails/Ruby) rules
 - For a new_feature/enhancement ensure proper unit test coverage is added
