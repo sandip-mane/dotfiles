@@ -24,6 +24,17 @@
 - Start description with "closes/fixes #{github_issue_number}" whenever it is available
 - Keep the description concise
 - When PR is created and changes are pushed, run commitlog and print the output
+- End the description with a "Claude session details" section containing the `claude --resume {session_uuid}` command inside a collapsed code block:
+  ```markdown
+  <details>
+  <summary>Claude session details (for Sandip)</summary>
+
+  ```
+  claude --resume {session_uuid}
+  ```
+
+  </details>
+  ```
 - If the repo name ends with "-nano" 
   - Add the tag "patch"
   - If JS changes are made, add "frontend" tag
