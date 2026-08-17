@@ -54,9 +54,10 @@ alias mec="ga . && git commit -m 'Minor enhancement' && ggpnp"
 export DOTFILES="${$(readlink -f ~/.zshrc):h:h:h}"
 alias dotsync="$DOTFILES/sync.sh"
 
-# Load all scripts from dotfiles repo
+# Load all scripts from dotfiles repo. Executables are standalone programs,
+# not function libraries: sourcing them would run them in the interactive shell.
 for script in $DOTFILES/scripts/**/*.sh; do
-  [ -e "$script" ] && source "$script"
+  [ -e "$script" ] && [ ! -x "$script" ] && source "$script"
 done
 
 # Init packages
