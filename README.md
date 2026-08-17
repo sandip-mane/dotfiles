@@ -75,6 +75,14 @@ Each folder mirrors `$HOME` and is symlinked via `stow`.
 
 See [`Brewfile`](Brewfile) for the full list of CLI tools, GUI apps, and Mac App Store installs.
 
+### Fast Downloads
+
+Use [`aria2`](https://aria2.github.io/) to download a file over 16 parallel connections:
+
+```bash
+aria2c -x 16 -s 16 {LINK}
+```
+
 ### Shell Scripts (`scripts/`)
 
 Sourced automatically by `.zshrc`. Organized by domain:
