@@ -139,6 +139,6 @@ done
 
 echo
 echo "# ---- Your PRs closed/merged in the window (catches review-only and triage work) ----"
-gh search prs --author=@me --closed="$PREV..$NEXT" --limit 40 \
+gh search prs --author=@me --closed="$PREV..$NEXT" --limit 200 \
   --json number,title,repository,state,closedAt 2>/dev/null \
   | python3 "$HERE/filter_closed.py" "$FROM" "$TO" "$DAY_START"

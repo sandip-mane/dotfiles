@@ -26,10 +26,12 @@
 - When PR is created and changes are pushed, run commitlog and print the output
 - End the description with a "Claude session details" section containing the `claude --resume {session_uuid}` command inside a collapsed code block:
   ```markdown
+  ---
   <details>
   <summary>Claude session details (for Sandip)</summary>
 
-  ```
+  ```yaml
+  # {repo_name}
   claude --resume {session_uuid}
   ```
 
