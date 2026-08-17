@@ -1,0 +1,17 @@
+{
+  "env": {
+    "CLAUDISH_MODEL": "gemma4:26b-mlx",
+    "CLAUDISH_MODE": "append"
+  },
+  "extraKnownMarketplaces": {
+    "gvzdv-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "gvzdv/claudish-to-english"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "claudish-to-english@gvzdv-plugins": true
+  }
+}

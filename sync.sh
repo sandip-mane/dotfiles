@@ -31,6 +31,9 @@ for pkg in packages/*/; do
   stow -d packages -t "$HOME" --no-folding -R "$(basename "$pkg")"
 done
 
+echo "Generating Claude settings..."
+"$DOTFILES/claude-settings.sh"
+
 # Update oh-my-zsh plugins and theme
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 echo "Updating oh-my-zsh plugins..."

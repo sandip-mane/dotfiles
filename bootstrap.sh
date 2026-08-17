@@ -71,7 +71,7 @@ for f in .zshrc .p10k.zsh .gitconfig .vimrc .mcp.json; do
 done
 
 # Backup nested configs
-for f in .ssh/config .config/mise/config.toml .config/gh/config.yml .config/atuin/config.toml .docker/config.json .claude/settings.json .claude/CLAUDE.md; do
+for f in .ssh/config .config/mise/config.toml .config/gh/config.yml .config/atuin/config.toml .docker/config.json .claude/CLAUDE.md; do
   if [ -f "$HOME/$f" ] && [ ! -L "$HOME/$f" ]; then
     echo "  Backing up ~/$f"
     mv "$HOME/$f" "$HOME/$f.backup.$(date +%s)"
@@ -84,6 +84,9 @@ for pkg in packages/*/; do
   stow -d packages -t "$HOME" --no-folding --adopt -R "$(basename "$pkg")"
 done
 git -C "$DOTFILES" checkout -- packages/
+
+echo "Generating Claude settings..."
+"$DOTFILES/claude-settings.sh"
 
 # 8. Install mise runtimes
 if command -v mise &>/dev/null; then

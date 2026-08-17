@@ -12,6 +12,11 @@
       "Skill(superpowers:*)"
     ]
   },
+  "enabledMcpjsonServers": [
+    "github",
+    "honeybadger",
+    "context7"
+  ],
   "hooks": {
     "Notification": [
       {
@@ -123,11 +128,6 @@
     "ruby-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
-  "enabledMcpjsonServers": [
-    "github",
-    "honeybadger",
-    "context7"
-  ],
   "tui": "default",
   "voice": {
     "enabled": true,
