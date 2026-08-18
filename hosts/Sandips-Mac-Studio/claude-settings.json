@@ -1,7 +1,9 @@
 {
   "env": {
     "CLAUDISH_MODEL": "gemma4:26b-mlx",
-    "CLAUDISH_MODE": "append"
+    "CLAUDISH_MODE": "append",
+    "CLAUDISH_MD_DIR": "/private/tmp/claude-501",
+    "CLAUDISH_MD_MODE": "sibling"
   },
   "extraKnownMarketplaces": {
     "gvzdv-plugins": {

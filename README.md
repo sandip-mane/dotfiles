@@ -52,7 +52,7 @@ claude plugin marketplace add gvzdv/claudish-to-english
 claude plugin install claudish-to-english@gvzdv-plugins
 ```
 
-`CLAUDISH_MODEL` and `CLAUDISH_MODE` live in
+The `CLAUDISH_*` vars live in
 `hosts/Sandips-Mac-Studio/claude-settings.json`; `./sync.sh` merges them into
 `~/.claude/settings.json`. Restart Claude Code after a change.
 
@@ -62,6 +62,15 @@ streams at full speed. `gemma4:26b-mlx` is MoE (~4B active of 25.2B), which is w
 keeps it usable — a dense model of the same size would miss the hook timeout.
 Measured here: **~2s** per rewrite warm at ~90 tok/s, plus a one-off **~8s** reload
 when Ollama's 5-minute idle timer has unloaded the 17 GB model.
+
+The plugin's second hook rewrites Markdown **files** on write/edit, scoped to
+`CLAUDISH_MD_DIR` — `/private/tmp/claude-501`, the scratchpad root Claude Code
+generates drafts under (`claude-<uid>`, so it is machine-specific). In `sibling`
+mode it writes `NAME.plain.md` beside the original and never touches the draft
+itself, so anything Claude acts on — a review draft it is about to post — is
+delivered as written. Real repo docs are out of scope entirely. The hook runs on
+every write, blocking that tool call for a few seconds up to a couple of minutes
+on a long doc.
 
 Kill switch: `touch ~/.claude/claudish-off`.
 
@@ -145,6 +154,7 @@ Sourced automatically by `.zshrc`. Organized by domain:
 | `ai/cldw.sh` | `cldw` | Claude worktree helper |
 | `git/sendpr.sh` | `sendpr` | Create PR with issue linking |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
+| `git/aicommit.sh` | `aic` | Draft a commit message from the staged diff with a local Ollama model |
 | `git/move_project_items.sh` | `move_project_items` | Bulk move GitHub project items |
 | `git/project_columns.sh` | `create_project_column` / `move_project_column` / `set_project_column_color` / `create_next_milestone` / `deprecate_old_milestone` | Manage GitHub project Status columns |
 | `git/bump_version.sh` | `bump_version` | Trigger a version bump PR and merge it |
