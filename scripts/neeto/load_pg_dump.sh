@@ -6,7 +6,12 @@ load_pg_dump() {
     ENV="staging"
   fi
   APP_NAME=$(basename $(pwd) | sed 's/neeto-//; s/-web//')
-  DB_NAME=$(grep -A 5 '^development:' config/database.yml | grep 'database:' | head -1 | sed 's/.*database: *//')
+  # database.yml is ERB-templated, so parse it through ERB instead of grepping the raw file.
+  DB_NAME=$(ruby -ryaml -rerb -e 'puts YAML.safe_load(ERB.new(File.read("config/database.yml")).result, aliases: true)["development"]["database"]' 2>/dev/null)
+  if [[ -z "$DB_NAME" || "$DB_NAME" == *'<%'* ]]; then
+    echo "Could not determine the development database name from config/database.yml"
+    return 1
+  fi
   USER=$(whoami)
   FILE_PATH=$(echo "/Users/"$USER"/Downloads/neeto/"$APP_NAME"_"$ENV".dump")
 
@@ -100,10 +105,9 @@ load_pg_dump() {
   pg_output=$(pg_restore --no-acl --no-owner -h localhost -U $USER -d $DB_NAME $FILE_PATH 2>&1)
   exit_code=$?
 
-  # Check for actual errors (not just "does not exist" warnings)
   if [ $exit_code -ne 0 ]; then
-    # Filter out "does not exist" errors which are expected on fresh databases
-    actual_errors=$(echo "$pg_output" | grep -v "does not exist" | grep -v "WARNING" | grep -v 'schema "public" already exists' | grep "ERROR")
+    # pg_restore reports failures as lowercase "error:", so match case-insensitively.
+    actual_errors=$(echo "$pg_output" | grep -i "error" | grep -vi "warning" | grep -vi 'role .* does not exist' | grep -vi 'schema "public" already exists')
 
     if [ -n "$actual_errors" ]; then
       show_status 4 4
