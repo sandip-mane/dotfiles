@@ -24,11 +24,12 @@ cd ~/Work/sandip-mane/dotfiles
 <summary>Manual steps after bootstrap</summary>
 
 - [ ] **Sign into 1Password** — `op account add --address domain.1password.com --email x@example.com`
-- [ ] **Generate secrets** — run `refresh-secrets` to populate `~/.secrets` from 1Password
+- [ ] **Generate secrets** — run `refresh-secrets` to overwrite `~/.secrets` with the "Dev Secrets" note (`op://Private/Dev Secrets/notesPlain` on the `neetozone` account)
 - [ ] **Remap Caps Lock to Control** — System Settings → Keyboard → Keyboard Shortcuts → Modifier Keys
 - [ ] **Add Work folder to Finder sidebar** — drag `~/Work` to Favorites
 - [ ] **Sync Bear notes** — run `bearin` to pull notes from GitHub into Bear; `bearout` to push the other way
 - [ ] **Install [NeetoRecord](https://neetorecord.com/neetorecord/download)**
+- [ ] **Grafana MCP** — the `grafana-deploy` / `grafana-ci` entries in `.mcp.json` run `mcp/grafana` via Docker, read-only; their `GRAFANA_URL_*` / `GRAFANA_SAT_*` vars come from `refresh-secrets`
 
 </details>
 
@@ -149,7 +150,7 @@ Sourced automatically by `.zshrc`. Organized by domain:
 
 | Script | Command | Description |
 | ------ | ------- | ----------- |
-| `secrets.sh` | `refresh-secrets` | Regenerate ~/.secrets from 1Password |
+| `secrets.sh` | `refresh-secrets` | Rewrite ~/.secrets from a 1Password note (`refresh-secrets "op://Vault/Item/field"` to use another) |
 | `bear.sh` | `bearin` / `bearout` | Sync Bear notes (GitHub → Bear / Bear → GitHub) |
 | `ai/cldw.sh` | `cldw` | Claude worktree helper |
 | `git/sendpr.sh` | `sendpr` | Create PR with issue linking |

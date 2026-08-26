@@ -21,6 +21,36 @@
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "grafana-deploy": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "GRAFANA_URL",
+        "-e", "GRAFANA_SERVICE_ACCOUNT_TOKEN",
+        "--entrypoint", "/app/mcp-grafana",
+        "mcp/grafana",
+        "-t", "stdio", "-disable-write", "-disable-admin"
+      ],
+      "env": {
+        "GRAFANA_URL": "${GRAFANA_URL_DEPLOY}",
+        "GRAFANA_SERVICE_ACCOUNT_TOKEN": "${GRAFANA_SAT_DEPLOY}"
+      }
+    },
+    "grafana-ci": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "GRAFANA_URL",
+        "-e", "GRAFANA_SERVICE_ACCOUNT_TOKEN",
+        "--entrypoint", "/app/mcp-grafana",
+        "mcp/grafana",
+        "-t", "stdio", "-disable-write", "-disable-admin"
+      ],
+      "env": {
+        "GRAFANA_URL": "${GRAFANA_URL_CI}",
+        "GRAFANA_SERVICE_ACCOUNT_TOKEN": "${GRAFANA_SAT_CI}"
+      }
     }
   }
 }

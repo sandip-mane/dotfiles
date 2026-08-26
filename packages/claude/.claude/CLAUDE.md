@@ -24,14 +24,14 @@
 - Start description with "closes/fixes #{github_issue_number}" whenever it is available
 - Keep the description concise
 - When PR is created and changes are pushed, run commitlog and print the output
-- End the description with a "Claude session details" section containing the `claude --resume {session_uuid}` command inside a collapsed code block. Use the name of the folder the Claude session is stored in (the session's working directory), not the repo name — these differ whenever the session was not started from the repo itself:
+- End the description with a "Claude session details" section containing the `claude --resume {session_uuid}` command inside a collapsed code block. Label it with just the folder name of the session's working directory — the last path segment only, never the full path (e.g. `neetozone`, not `-Users-sandip-Work-neetozone`). Use that folder name, not the repo name — these differ whenever the session was not started from the repo itself:
   ```markdown
   ---
   <details>
   <summary>Claude session details (for Sandip)</summary>
 
   ```yaml
-  # {session_folder_name}
+  # {session_folder_name}   # e.g. neetozone
   claude --resume {session_uuid}
   ```
 

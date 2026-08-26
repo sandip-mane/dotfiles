@@ -9,13 +9,17 @@
       "Grep",
       "mcp__github__*",
       "mcp__honeybadger__*",
+      "mcp__grafana-deploy__*",
+      "mcp__grafana-ci__*",
       "Skill(superpowers:*)"
     ]
   },
   "enabledMcpjsonServers": [
     "github",
     "honeybadger",
-    "context7"
+    "context7",
+    "grafana-deploy",
+    "grafana-ci"
   ],
   "hooks": {
     "Notification": [

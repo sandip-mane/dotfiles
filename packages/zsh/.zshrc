@@ -56,7 +56,7 @@ alias dotsync="$DOTFILES/sync.sh"
 
 # Load all scripts from dotfiles repo. Executables are standalone programs,
 # not function libraries: sourcing them would run them in the interactive shell.
-for script in $DOTFILES/scripts/**/*.sh; do
+for script in $DOTFILES/scripts/**/*.sh(N); do
   [ -e "$script" ] && [ ! -x "$script" ] && source "$script"
 done
 
