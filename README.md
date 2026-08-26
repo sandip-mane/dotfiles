@@ -77,8 +77,7 @@ runtime-owned `autoMode` key, and runs from both `bootstrap.sh` and `sync.sh`.
 | Calendr        | `configs/calendr/defaults.sh`           |
 | Maccy          | `configs/maccy/defaults.sh`             |
 | Mac Mouse Fix  | `configs/mac-mouse-fix/config.plist`    |
-| iTerm2         | `configs/iterm2/Default.json`           |
-| Muxy           | `configs/muxy/ghostty.conf` + `configs/muxy/themes/` |
+| cmux           | `configs/cmux/` — `cmux.json` (settings + shortcuts), `ghostty.conf` (terminal) |
 
 ### Packages & Apps
 
@@ -100,7 +99,6 @@ Sourced automatically by `.zshrc`. Organized by domain:
 | ------ | ------- | ----------- |
 | `secrets.sh` | `refresh-secrets` | Rewrite ~/.secrets from a 1Password note (`refresh-secrets "op://Vault/Item/field"` to use another) |
 | `bear.sh` | `bearin` / `bearout` | Sync Bear notes (GitHub → Bear / Bear → GitHub) |
-| `ai/cldw.sh` | `cldw` | Claude worktree helper |
 | `git/sendpr.sh` | `sendpr` | Create PR with issue linking |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
 | `git/move_project_items.sh` | `move_project_items` | Bulk move GitHub project items |

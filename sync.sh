@@ -52,26 +52,11 @@ source "$DOTFILES/configs/maccy/defaults.sh"
 mkdir -p "$HOME/Library/Application Support/com.nuebling.mac-mouse-fix"
 cp "$DOTFILES/configs/mac-mouse-fix/config.plist" "$HOME/Library/Application Support/com.nuebling.mac-mouse-fix/config.plist"
 
-if compgen -G "$DOTFILES/configs/iterm2/*.json" > /dev/null; then
-  ITERM_DYN_DIR="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
-  mkdir -p "$ITERM_DYN_DIR"
-  for f in "$DOTFILES"/configs/iterm2/*.json; do
-    ln -sfn "$f" "$ITERM_DYN_DIR/$(basename "$f")"
-  done
-  if [ -f "$DOTFILES/configs/iterm2/Default.json" ]; then
-    DEFAULT_GUID=$(python3 -c "import json; print(json.load(open('$DOTFILES/configs/iterm2/Default.json'))['Profiles'][0]['Guid'])")
-    defaults write com.googlecode.iterm2 "Default Bookmark Guid" -string "$DEFAULT_GUID"
-  fi
-fi
-
-if [ -f "$DOTFILES/configs/muxy/ghostty.conf" ]; then
-  MUXY_DIR="$HOME/Library/Application Support/Muxy"
-  GHOSTTY_THEMES="$HOME/.config/ghostty/themes"
-  mkdir -p "$MUXY_DIR" "$GHOSTTY_THEMES"
-  ln -sfn "$DOTFILES/configs/muxy/ghostty.conf" "$MUXY_DIR/ghostty.conf"
-  for f in "$DOTFILES"/configs/muxy/themes/*; do
-    ln -sfn "$f" "$GHOSTTY_THEMES/$(basename "$f")"
-  done
+# cmux: settings + shortcuts in cmux.json, terminal rendering in Ghostty config
+if [ -d "$DOTFILES/configs/cmux" ]; then
+  mkdir -p "$HOME/.config/cmux" "$HOME/.config/ghostty"
+  ln -sfn "$DOTFILES/configs/cmux/cmux.json" "$HOME/.config/cmux/cmux.json"
+  ln -sfn "$DOTFILES/configs/cmux/ghostty.conf" "$HOME/.config/ghostty/config"
 fi
 
 echo "Dotfiles synced."
