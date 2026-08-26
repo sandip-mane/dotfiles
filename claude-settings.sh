@@ -1,14 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-# Generates ~/.claude/settings.json from a shared base plus an optional
-# per-host overlay. Claude Code rewrites this file at runtime, so it cannot be
-# a stow symlink.
+# Generates ~/.claude/settings.json from the tracked base. Claude Code rewrites
+# this file at runtime, so it cannot be a stow symlink.
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 BASE="$DOTFILES/configs/claude/settings.base.json"
-OVERLAY="$DOTFILES/hosts/$(scutil --get LocalHostName)/claude-settings.json"
 TARGET="$HOME/.claude/settings.json"
 
 # Keys Claude Code owns at runtime; carried over instead of being regenerated.
@@ -19,26 +17,21 @@ PRESERVE='{autoMode}'
 
 TMPDIR_="$(mktemp -d)"
 trap 'rm -rf "$TMPDIR_"' EXIT
-EMPTY="$TMPDIR_/empty.json"
-echo '{}' > "$EMPTY"
 
 mkdir -p "$HOME/.claude"
 
 # Older setups stowed this file; a symlink would write back into the repo.
 if [ -L "$TARGET" ]; then rm "$TARGET"; fi
 
-if [ -f "$OVERLAY" ]; then
-  echo "  Claude settings: base + $(basename "$(dirname "$OVERLAY")")"
+if [ -f "$TARGET" ]; then
+  LIVE="$TARGET"
 else
-  echo "  Claude settings: base only (no overlay for this host)"
-  OVERLAY="$EMPTY"
+  LIVE="$TMPDIR_/empty.json"
+  echo '{}' > "$LIVE"
 fi
 
-if [ -f "$TARGET" ]; then LIVE="$TARGET"; else LIVE="$EMPTY"; fi
-
 OUT="$TMPDIR_/settings.json"
-jq -s ".[0] * .[1] * (.[2] | $PRESERVE | with_entries(select(.value != null)))" \
-  "$BASE" "$OVERLAY" "$LIVE" > "$OUT"
+jq -s '.[0] * (.[1] | '"$PRESERVE"' | with_entries(select(.value != null)))' "$BASE" "$LIVE" > "$OUT"
 
 if [ -f "$TARGET" ] && cmp -s "$OUT" "$TARGET"; then
   exit 0
