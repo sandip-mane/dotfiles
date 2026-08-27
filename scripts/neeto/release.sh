@@ -125,7 +125,29 @@ release() {
   if gh pr list --head $RELEASE_BRANCH --base $BASE_BRANCH --json url --jq '.[0].url' 2>/dev/null | grep -q .; then
     echo "ℹ️  Pull request already exists for $RELEASE_BRANCH - skipping creation"
   else
-    if ! gh pr create --fill --base $BASE_BRANCH --title "$(date "+Release %Y-%m-%d")" >/dev/null 2>&1; then
+    # Subjects of every squashed PR going out in this release, oldest first.
+    local release_subjects automated_subjects manual_subjects release_body
+    local automated_pattern='^\[(neeto-translate|Playwright)\]|^Automated rollout|^Bump '
+    release_subjects=$(git log --no-merges --reverse --format="%s" $BASE_BRANCH..HEAD)
+    automated_subjects=$(printf '%s\n' "$release_subjects" | grep -E "$automated_pattern")
+    manual_subjects=$(printf '%s\n' "$release_subjects" | grep -vE "$automated_pattern")
+
+    # GitHub renders a bare "#1234" as the PR title, so the subject is redundant.
+    local to_bullets='{ if (match($0, /\(#[0-9]+\)$/)) print "- #" substr($0, RSTART + 2, RLENGTH - 3); else print "- " $0 }'
+
+    release_body=""
+    if [ -n "$manual_subjects" ]; then
+      release_body+="## Changes"$'\n\n'"$(printf '%s\n' "$manual_subjects" | awk "$to_bullets")"$'\n\n'
+    fi
+    if [ -n "$automated_subjects" ]; then
+      release_body+="## Automated"$'\n\n'"$(printf '%s\n' "$automated_subjects" | awk "$to_bullets")"
+    fi
+
+    if [ -z "$release_body" ]; then
+      release_body="No changes since the last release."
+    fi
+
+    if ! gh pr create --base $BASE_BRANCH --title "$(date "+Release %Y-%m-%d")" --body "$release_body" >/dev/null 2>&1; then
       show_progress "$pretext" 7 1 "${release_steps[@]}"
       echo "❌ Failed to create pull request"
       return 1
