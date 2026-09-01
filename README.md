@@ -102,6 +102,7 @@ Sourced automatically by `.zshrc`. Organized by domain:
 | `bear.sh` | `bearin` / `bearout` | Sync Bear notes (GitHub → Bear / Bear → GitHub) |
 | `git/sendpr.sh` | `sendpr` | Create PR with issue linking |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
+| `git/aicommit.sh` | `aic` | Draft a commit message from the staged diff with a local Ollama model |
 | `git/move_project_items.sh` | `move_project_items` | Bulk move GitHub project items |
 | `git/project_columns.sh` | `create_project_column` / `move_project_column` / `set_project_column_color` / `create_next_milestone` / `deprecate_old_milestone` | Manage GitHub project Status columns |
 | `git/bump_version.sh` | `bump_version` | Trigger a version bump PR and merge it |
