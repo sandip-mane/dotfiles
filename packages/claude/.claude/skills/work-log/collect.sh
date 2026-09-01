@@ -3,14 +3,16 @@
 # A work day runs 06:00 to 05:59 the next morning, so a late-night session stays
 # on the day it started.
 # Usage: collect.sh [today|yesterday|YYYY-MM-DD|YYYY-MM-DD..YYYY-MM-DD]
-# Env:   WORKLOG_ROOTS (colon-separated dirs to scan, one level deep)
+# Env:   WORKLOG_ROOTS (colon-separated dirs to search for repos)
+#        WORKLOG_DEPTH (how many levels under each root to search, default 4)
 #        WORKLOG_AUTHOR (git --author regex; defaults to first word of git user.name)
 #        WORKLOG_DAY_START_HOUR (day boundary, default 6)
 set -uo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SPEC="${1:-today}"
-ROOTS="${WORKLOG_ROOTS:-$HOME/Work:$HOME/Work/neetozone}"
+ROOTS="${WORKLOG_ROOTS:-$HOME/Work}"
+DEPTH="${WORKLOG_DEPTH:-4}"
 AUTHOR="${WORKLOG_AUTHOR:-$(git config --global user.name 2>/dev/null | awk '{print $1}')}"
 AUTHOR="${AUTHOR:-$(whoami)}"
 DAY_START="${WORKLOG_DAY_START_HOUR:-6}"
@@ -44,20 +46,34 @@ echo "# Work log data: $HEADER (work day $BOUNDARY to $BOUNDARY next morning), a
 echo "# Header to use in the log output: $HEADER"
 [ "$SHIFT" = 1 ] && echo "# note: it is before $BOUNDARY, so \"$SPEC\" resolves to $HEADER"
 
-# --- Discover repos, resolving each remote exactly once
+# --- Discover repos, resolving each remote exactly once.
+# Repos sit at different depths per machine (~/Work/foo, ~/Work/org/web/foo), so
+# descend until one is found and never walk into a repo's own subdirectories.
 declare -a DIRS=() SLUGS=()
+
+add_repo() {
+  local r="$1" url slug
+  url=$(git -C "$r" config --get remote.origin.url 2>/dev/null)
+  slug="${url#git@github.com:}"; slug="${slug#https://github.com/}"; slug="${slug%.git}"
+  DIRS+=("$r"); SLUGS+=("$slug")
+}
+
+walk_root() {
+  local d="$1" level="$2" child base
+  if [ -e "$d/.git" ]; then add_repo "$d"; return; fi
+  [ "$level" -ge "$DEPTH" ] && return
+  for child in "$d"/*/; do
+    [ -d "$child" ] || continue
+    base="${child%/}"; base="${base##*/}"
+    case "$base" in .*|node_modules|vendor|tmp|Library|Applications) continue ;; esac
+    walk_root "${child%/}" $((level + 1))
+  done
+}
+
 IFS=: read -r -a ROOT_LIST <<<"$ROOTS"
 for root in "${ROOT_LIST[@]}"; do
   [ -d "$root" ] || continue
-  for d in "$root"/*/; do
-    r="${d%/}"
-    url=$(git -C "$r" config --get remote.origin.url 2>/dev/null)
-    if [ -z "$url" ]; then
-      git -C "$r" rev-parse --git-dir >/dev/null 2>&1 || continue
-    fi
-    slug="${url#git@github.com:}"; slug="${slug#https://github.com/}"; slug="${slug%.git}"
-    DIRS+=("$r"); SLUGS+=("$slug")
-  done
+  walk_root "$root" 0
 done
 
 # One directory per remote, preferring the one named after the repo (skips worktrees).
@@ -79,6 +95,13 @@ for i in "${!DIRS[@]}"; do
   REPOS+=("$best|$slug")
 done
 
+if [ "${#REPOS[@]}" -eq 0 ]; then
+  echo
+  echo "# WARNING: no git repos found under: $ROOTS (depth $DEPTH)"
+  echo "# The commit scan is the primary source. Do NOT write a log from the"
+  echo "# closed/merged PR section alone - set WORKLOG_ROOTS/WORKLOG_DEPTH and re-run."
+fi
+
 # --- Scan every repo at once; the log walks are independent and IO-bound
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
@@ -90,12 +113,17 @@ for i in "${!REPOS[@]}"; do
 done
 wait
 
+echo
+echo "# Scanned ${#REPOS[@]} repo(s) under: $ROOTS (depth $DEPTH)"
+
 declare -a PR_REFS=()
+FOUND_COMMITS=0
 for i in "${!REPOS[@]}"; do
   entry="${REPOS[$i]}"
   r="${entry%%|*}"; slug="${entry##*|}"
   raw=$(<"$TMP/$i")
   [ -z "$raw" ] && continue
+  FOUND_COMMITS=1
 
   echo
   echo "## repo: ${r##*/}  [${slug:-no-remote}]"
@@ -111,6 +139,11 @@ for i in "${!REPOS[@]}"; do
     [ -n "$n" ] && [ -n "$slug" ] && PR_REFS+=("$slug|num|$n")
   done < <(printf '%s\n' "$raw" | grep -oE '\(#[0-9]+\)' | tr -d '(#)')
 done
+
+if [ "${#REPOS[@]}" -gt 0 ] && [ "$FOUND_COMMITS" -eq 0 ]; then
+  echo "# note: repos were scanned but no commits matched author=/$AUTHOR/i in this window."
+  echo "# If that looks wrong, check WORKLOG_AUTHOR against 'git log --format=%an'."
+fi
 
 echo
 echo "# ---- Pull requests ----"

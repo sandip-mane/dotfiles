@@ -21,8 +21,9 @@ day it started. Two consequences: run it before 06:00 and `today` means the date
 script says so on a `# note:` line and the header is already correct, so just use it. And an explicit date
 is always taken literally; `2026-07-23` is that one work day, never shifted.
 
-The script scans every git repo one level under `~/Work` and `~/Work/neetozone` (override with
-`WORKLOG_ROOTS`), de-duplicating worktrees against their parent repo. It prints three sections:
+The script searches `~/Work` up to 4 levels deep for git repos (override with `WORKLOG_ROOTS` /
+`WORKLOG_DEPTH`), stopping at each repo rather than descending into it, and de-duplicating worktrees
+against their parent repo. It prints three sections:
 
 | Section | What it gives you |
 |---|---|
@@ -30,7 +31,13 @@ The script scans every git repo one level under `~/Work` and `~/Work/neetozone` 
 | `# ---- Pull requests ----` | Each PR behind those branches, with its `closes:` issue refs |
 | `# ---- Your PRs closed/merged ----` | Work with no commits that day — triage, closures, supersessions |
 
-Read all three. The third section is where non-commit work hides.
+Read all three. The commit scan is the **primary** source — it is the only one that sees open PRs and
+work not yet merged. The third section only supplements it with work that left no commits that day.
+
+Check the `# Scanned N repo(s)` line before trusting the output. If it says `0`, or the script prints a
+`# WARNING: no git repos found`, the commit scan saw nothing and the log would be silently built from
+merged PRs alone — stop and fix `WORKLOG_ROOTS`/`WORKLOG_DEPTH`, do not write a log from what remains.
+Same for the `no commits matched author` note: fix `WORKLOG_AUTHOR` and re-run.
 
 ## Step 2: Map commits to issues
 
@@ -92,6 +99,8 @@ could not be resolved. This is what the user cannot see from `git log` alone.
 | Logging the PR number when the PR says `closes #N` | The log tracks issues. Use `#N`. |
 | One entry per commit | Group by branch/issue. |
 | Skipping the closed-PRs section | Triage and review-only work has no commits and would be lost. |
+| Writing a log when `Scanned 0 repo(s)` | The commit scan found nothing. Fix the roots and re-run. |
+| Logging only merged work | Open PRs with commits that day are work. The commit scan catches them. |
 | Restating the PR body | Bullets are one line. The reader already has the PR. |
 | Counting a `Merge branch 'main' into X` as work | Look up X's PR instead. |
 | Trusting `gh search` dates | It is UTC. The script re-filters to the local work day; commit times are already local. |
