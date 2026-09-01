@@ -155,3 +155,6 @@ done
 
 echo ""
 echo "Bootstrap complete! Restart your terminal to apply all changes."
+echo ""
+echo "Local AI is opt-in — on a Mac with enough RAM, run 'make local-ai' to"
+echo "install ollama and the model behind 'aic'."

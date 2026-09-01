@@ -29,6 +29,7 @@ cd ~/Work/sandip-mane/dotfiles
 - [ ] **Add Work folder to Finder sidebar** — drag `~/Work` to Favorites
 - [ ] **Sync Bear notes** — run `bearin` to pull notes from GitHub into Bear; `bearout` to push the other way
 - [ ] **Install [NeetoRecord](https://neetorecord.com/neetorecord/download)**
+- [ ] **Local AI (high-memory Macs only)** — run `make local-ai` to install ollama and the local model behind `aic`
 - [ ] **Grafana MCP** — the `grafana-deploy` / `grafana-ci` entries in `.mcp.json` run `mcp/grafana` via Docker, read-only; their `GRAFANA_URL_*` / `GRAFANA_SAT_*` vars come from `refresh-secrets`
 
 </details>
@@ -91,6 +92,19 @@ Use [`aria2`](https://aria2.github.io/) to download a file over 16 parallel conn
 ```bash
 aria2c -x 16 -s 16 {LINK}
 ```
+
+### Local AI (`local-ai.sh`)
+
+Local models, kept out of `bootstrap.sh` and `sync.sh` because they need more
+memory than every Mac here has. Run it only on machines with enough RAM:
+
+```bash
+make local-ai
+```
+
+It installs `ollama`, starts its Homebrew service and pulls `gemma4:26b-mlx`,
+the model [`aic`](#shell-scripts-scripts) uses to draft a commit subject from
+the staged diff. Set `OLLAMA_COMMIT_MODEL` to use a different model for both.
 
 ### Shell Scripts (`scripts/`)
 

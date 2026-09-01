@@ -1,4 +1,4 @@
-.PHONY: bootstrap sync stow macos
+.PHONY: bootstrap sync stow macos local-ai
 
 bootstrap:
 	./bootstrap.sh
@@ -11,3 +11,6 @@ stow:
 
 macos:
 	./macos.sh
+
+local-ai:
+	./local-ai.sh
