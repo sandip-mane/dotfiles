@@ -19,6 +19,11 @@ ZSHZ_CMD="j"
 
 source $ZSH/oh-my-zsh.sh
 
+# Muxy tab titles mirror the terminal title, which oh-my-zsh sets to
+# user@host:full-path. Show just the current folder instead.
+ZSH_THEME_TERM_TITLE_IDLE="%1~"
+ZSH_THEME_TERM_TAB_TITLE_IDLE="%1~"
+
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 # Load secrets (API keys, tokens)
