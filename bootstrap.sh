@@ -117,12 +117,12 @@ if compgen -G "$DOTFILES/configs/iterm2/*.json" > /dev/null; then
   fi
 fi
 
-# cmux: settings + shortcuts in cmux.json, terminal rendering in Ghostty config
-if [ -d "$DOTFILES/configs/cmux" ]; then
-  echo "Linking cmux config..."
-  mkdir -p "$HOME/.config/cmux" "$HOME/.config/ghostty"
-  ln -sfn "$DOTFILES/configs/cmux/cmux.json" "$HOME/.config/cmux/cmux.json"
-  ln -sfn "$DOTFILES/configs/cmux/ghostty.conf" "$HOME/.config/ghostty/config"
+# Muxy: terminal rendering in the Ghostty config it reads from Application Support
+if [ -f "$DOTFILES/configs/muxy/ghostty.conf" ]; then
+  echo "Linking Muxy config..."
+  MUXY_DIR="$HOME/Library/Application Support/Muxy"
+  mkdir -p "$MUXY_DIR"
+  ln -sfn "$DOTFILES/configs/muxy/ghostty.conf" "$MUXY_DIR/ghostty.conf"
 fi
 
 # 10. Set default shell to Homebrew zsh

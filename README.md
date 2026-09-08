@@ -79,7 +79,7 @@ runtime-owned `autoMode` key, and runs from both `bootstrap.sh` and `sync.sh`.
 | Maccy          | `configs/maccy/defaults.sh`             |
 | Mac Mouse Fix  | `configs/mac-mouse-fix/config.plist`    |
 | iTerm2         | `configs/iterm2/Default.json`           |
-| cmux           | `configs/cmux/` — `cmux.json` (settings + shortcuts), `ghostty.conf` (terminal) |
+| Muxy           | `configs/muxy/ghostty.conf` — terminal rendering |
 
 ### Packages & Apps
 
