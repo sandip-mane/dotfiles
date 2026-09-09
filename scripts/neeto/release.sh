@@ -127,7 +127,7 @@ release() {
   else
     # Subjects of every squashed PR going out in this release, oldest first.
     local release_subjects automated_subjects manual_subjects release_body
-    local automated_pattern='^\[(neeto-translate|Playwright)\]|^Automated rollout|^Bump '
+    local automated_pattern='^\[(neeto-translate|Playwright[^]]*)\]|^Automated rollout|^Bump |^Fix failing Playwright tests'
     release_subjects=$(git log --no-merges --reverse --format="%s" $BASE_BRANCH..HEAD)
     automated_subjects=$(printf '%s\n' "$release_subjects" | grep -E "$automated_pattern")
     manual_subjects=$(printf '%s\n' "$release_subjects" | grep -vE "$automated_pattern")
