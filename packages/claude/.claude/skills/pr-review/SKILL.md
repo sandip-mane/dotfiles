@@ -30,11 +30,22 @@ gh pr diff <N>
 
 If the body references an issue (`Fixes #NNNN`), read it. The stated intent is what you check completeness against — a PR titled "build API and CLI" that ships only the API half is a finding no amount of line-by-line reading will surface.
 
-Then **check out the branch** and note the branch you started on:
+Then **check out the branch into a worktree**. Never use `gh pr checkout` or `git checkout` in the user's repo. It may have uncommitted work, a running server, or a branch they're in the middle of.
 
 ```bash
-gh pr checkout <N>
+git fetch origin pull/<N>/head
+git worktree add --detach "${TMPDIR:-/tmp}/pr-review/<repo>-<N>" FETCH_HEAD
 ```
+
+To review a branch instead of a PR, run `git fetch origin <branch>` and use `origin/<branch>` in place of `FETCH_HEAD`. A detached HEAD avoids "already checked out" errors when the branch is also open in the main checkout. If the worktree path already exists from an earlier review, remove it first (Step 6).
+
+To review "the current diff", review it in place. The change is the uncommitted work itself, so there's nothing to check out.
+
+The worktree only contains tracked files. Copy in the gitignored files the app needs to boot and run tests, such as `.env*`, `config/master.key` and `config/database.yml`. Install dependencies (`node_modules`, `vendor/bundle`) in the worktree. Symlinking them from the main checkout is fine only if the diff doesn't touch the lockfile.
+
+If the diff changes the schema, give the worktree its own test database so the shared one keeps the base branch's schema. Rename the database in the worktree's copy of `config/database.yml` (e.g. `<name>_pr_<N>`), then run `bin/rails db:test:prepare`. Write the name down, because Step 6 drops it.
+
+**From here on, every command runs in the worktree and every file path points under it.** Shell variables don't persist between tool calls, so use the absolute worktree path literally: `cd <wt> && …`, `git -C <wt> …`, and `Read <wt>/app/...`. Reading a file under the main repo path shows you the base branch, not the PR.
 
 Reviewing from the diff alone is the single biggest cause of wrong findings. You need the branch on disk to grep for callers, read the definitions the diff depends on, and run probes.
 
@@ -141,7 +152,7 @@ Apply the same standard as the backend.
 
 ## Step 4: Verify by execution
 
-For each Pass A finding, write a throwaway probe and run it. Put it where the test framework will load it.
+For each Pass A finding, write a throwaway probe and run it from the worktree. Put it where the test framework will load it.
 
 ```ruby
 # test/controllers/zz_probe_test.rb
@@ -194,19 +205,27 @@ Most-severe first within each tier. Three real findings beat fifteen nitpicks �
 
 ## Step 6: Clean up
 
+Do this whenever the review ends, whether it finished, was abandoned, or stopped on an error.
+
 ```bash
-rm -f <probe files>
-git checkout <original-branch>
-git status --short   # must be clean
+psql -lqt | cut -d'|' -f1 | grep '<review_db>'   # the review database plus any parallel-test copies (<review_db>-0, -1, …)
+dropdb --if-exists <each name listed>
+git worktree remove --force <wt>
+git worktree prune
+git status --short   # the user's checkout, unchanged from before the review
 ```
 
-Never leave probe files or a checked-out review branch behind.
+Drop only databases created for this review. First check that no name matches a database in the main checkout's `config/database.yml`. Never run `bin/rails db:drop` from the worktree: if its copied config still points at the shared database, that command drops the user's database. Commands are for Postgres; use the equivalent for other databases.
+
+Removing the worktree also removes the probes. For an in-place "current diff" review, delete the probe files yourself with `rm -f`.
+
+Never leave probe files, a review worktree, or a review database behind.
 
 ## Step 7: Report
 
 Report in the chat by default. Only post to GitHub if asked.
 
-1. One line: what was reviewed, that you checked out the branch and ran probes, and the linter status.
+1. One line: what was reviewed, that you checked it out in a worktree and ran probes, and the linter status.
 2. `## Blocking` — numbered. Each: a title ending in **— verified**, the `file:line` and code, why it's wrong (citing the `file:line` in the dependency/guard/model that proves it), the literal probe output, and the fix.
 3. `## Conventions / cleanup` — numbered, continuing. Each: `file:line`, the code, and a concrete replacement snippet.
 4. `## Frontend` — same shape, when frontend files changed.
@@ -223,7 +242,10 @@ Rules for the write-up:
 
 - About to report a bug you have not run → Step 4.
 - About to say "this could be extracted" without having grepped for the existing thing → Step 2, Pass B.
-- Reviewing from the diff output only → check out the branch.
+- Reviewing from the diff output only → create the worktree.
+- About to run `gh pr checkout` or `git checkout` in the user's repo → create a worktree instead.
+- Reading or grepping a path under the main repo mid-review → that's the base branch. Use the worktree path.
+- About to end the review, or give up on it, with the worktree or review database still around → Step 6.
 - Judging a class without having read its base class and mixins → read them.
 - Trusting an authorization helper without opening its body → open it.
 - Concluding "tests pass, so it works" → find the path the tests avoid.
@@ -234,6 +256,7 @@ Rules for the write-up:
 | Excuse | Reality |
 |---|---|
 | "The diff is small, I don't need the branch" | Reuse and authorization findings come from code outside the diff. |
+| "`gh pr checkout` is quicker than a worktree" | It changes the branch the user is on, along with their uncommitted work and running server. A worktree takes two commands. |
 | "CI is green" | Tests routinely dodge the broken path. That dodge is itself the finding. |
 | "It's obviously broken, I can see it" | Obvious-looking bugs are wrong often enough to matter. Run it. |
 | "The author probably had a reason" | Then the reason belongs in the code. Report it and let them answer. |

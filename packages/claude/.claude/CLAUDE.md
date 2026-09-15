@@ -21,6 +21,7 @@
 - Do not include github issue number in the commit message or PR title
 
 ## Github Pull Request Rules
+- Always create PRs as draft
 - Start description with "closes/fixes #{github_issue_number}" whenever it is available
 - Keep the description concise
 - When PR is created and changes are pushed, run commitlog and print the output
