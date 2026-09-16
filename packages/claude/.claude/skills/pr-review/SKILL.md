@@ -223,7 +223,7 @@ Never leave probe files, a review worktree, or a review database behind.
 
 ## Step 7: Report
 
-Report in the chat by default. Only post to GitHub if asked.
+Report in the chat by default. Only post to GitHub if asked; when asked, **REQUIRED SUB-SKILL:** use pr-submit-feedback.
 
 1. One line: what was reviewed, that you checked it out in a worktree and ran probes, and the linter status.
 2. `## Blocking` — numbered. Each: a title ending in **— verified**, the `file:line` and code, why it's wrong (citing the `file:line` in the dependency/guard/model that proves it), the literal probe output, and the fix.

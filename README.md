@@ -115,6 +115,7 @@ Sourced automatically by `.zshrc`. Organized by domain:
 | `secrets.sh` | `refresh-secrets` | Rewrite ~/.secrets from a 1Password note (`refresh-secrets "op://Vault/Item/field"` to use another) |
 | `bear.sh` | `bearin` / `bearout` | Sync Bear notes (GitHub → Bear / Bear → GitHub) |
 | `git/sendpr.sh` | `sendpr` | Create PR with issue linking |
+| `git/aireview.sh` | `aireview` | Start a named Claude session running `/pr-review` on a PR URL |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
 | `git/aicommit.sh` | `aic` | Draft a commit message from the staged diff with a local Ollama model |
 | `git/move_project_items.sh` | `move_project_items` | Bulk move GitHub project items |
