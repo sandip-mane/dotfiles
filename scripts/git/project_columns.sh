@@ -19,6 +19,7 @@
 _PC_COLORS="GRAY BLUE GREEN YELLOW ORANGE RED PINK PURPLE"
 
 _pc_quiet() {
+  if [[ -t 1 && -z "$NO_COLOR" ]]; then _PC_COLOR=1; else _PC_COLOR=0; fi
   trap '' DEBUG 2>/dev/null || true
   if typeset -f TRAPDEBUG >/dev/null 2>&1; then
     unfunction TRAPDEBUG 2>/dev/null || true
@@ -134,8 +135,50 @@ _pc_validate_color() {
   echo "$color"
 }
 
+# Nearest 256-color ANSI code for each GitHub project column color
+_pc_ansi_code() {
+  case "$1" in
+    GRAY)   echo 244 ;;
+    BLUE)   echo 39  ;;
+    GREEN)  echo 42  ;;
+    YELLOW) echo 220 ;;
+    ORANGE) echo 208 ;;
+    RED)    echo 203 ;;
+    PINK)   echo 205 ;;
+    PURPLE) echo 141 ;;
+    *)      echo 250 ;;
+  esac
+}
+
+_pc_paint() {
+  if [[ "$_PC_COLOR" == 1 ]]; then
+    printf '\033[38;5;%dm%s\033[0m' "$(_pc_ansi_code "$1")" "$2"
+  else
+    printf '%s' "$2"
+  fi
+}
+
+_pc_tag() { _pc_paint "$1" "[$1]"; }
+
 _pc_print_columns() {
-  echo "$1" | jq -r 'to_entries[] | "   \(.key + 1). \(.value.name) [\(.value.color)]\(if .value.id then "" else "  ← new" end)"'
+  local reset=$'\033[0m' dim=$'\033[2m' bold=$'\033[1m'
+  local num name color new label marker
+  while IFS=$'\t' read -r num name color new; do
+    if [[ "$_PC_COLOR" != 1 ]]; then
+      printf '   %s. %s [%s]%s\n' "$num" "$name" "$color" "${new:+  ← new}"
+      continue
+    fi
+    label=$(_pc_paint "$color" "[$color]")
+    if [[ -n "$new" ]]; then
+      marker="  $bold$(_pc_paint "$color" "← new")$reset"
+      name="$bold$name$reset"
+    else
+      marker=""
+    fi
+    printf '   %s%s.%s %s %s%s\n' "$dim" "$num" "$reset" "$name" "$label" "$marker"
+  done < <(echo "$1" | jq -r 'to_entries[]
+    | [(.key + 1), .value.name, .value.color, (if .value.id then "" else "new" end)]
+    | @tsv')
 }
 
 # Writes the option list back; refuses to drop any existing option
@@ -261,7 +304,7 @@ create_project_column() {
     --arg name "$name" --arg color "$color" \
     '$o[:$at] + [{name: $name, color: $color, description: ""}] + $o[$at:]')
 
-  echo "➕ Creating column '$name' [$color] at position $((at + 1))"
+  echo "➕ Creating column '$name' $(_pc_tag "$color") at position $((at + 1))"
   _pc_write "$field_id" "$col_opts" "$updated" "$dry_run" "$assume_yes"
 }
 
@@ -337,7 +380,7 @@ set_project_column_color() {
 
   local updated=$(echo "$col_opts" | jq -c --arg c "$color" "[.[] | .] | .[$idx].color = \$c")
 
-  echo "🎨 Recoloring '$target_name' → $color"
+  echo "🎨 Recoloring '$target_name' → $(_pc_paint "$color" "$color")"
   _pc_write "$field_id" "$col_opts" "$updated" "$dry_run" "$assume_yes"
 }
 
@@ -425,7 +468,7 @@ create_next_milestone() {
 
   : ${color:=GREEN}
 
-  echo "➕ Creating '$next_name' [$color] before '$current_name' at position $((at + 1))"
+  echo "➕ Creating '$next_name' $(_pc_tag "$color") before '$current_name' at position $((at + 1))"
 
   local updated=$(jq -n --argjson o "$col_opts" --argjson at "$at" \
     --arg newName "$next_name" --arg color "$color" \
@@ -478,8 +521,8 @@ deprecate_old_milestone() {
     return 1
   }
 
-  echo "📦 Deprecating '$old_name' → PURPLE, parked after 'Done'"
-  echo "🔵 Promoting '$cur_name' → BLUE"
+  echo "📦 Deprecating '$old_name' → $(_pc_paint PURPLE PURPLE), parked after 'Done'"
+  echo "🔵 Promoting '$cur_name' → $(_pc_paint BLUE BLUE)"
 
   local updated=$(jq -n --argjson o "$col_opts" --argjson curIdx "$cur_idx" \
     --argjson oldIdx "$old_idx" --argjson doneIdx "$done_idx" \
