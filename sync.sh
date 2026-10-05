@@ -14,6 +14,7 @@ fi
 echo "Updating Homebrew packages..."
 export HOMEBREW_CASK_OPTS="--no-quarantine"
 brew update
+"$DOTFILES/local-tap.sh"
 brew bundle --file="$DOTFILES/Brewfile"
 brew cleanup
 

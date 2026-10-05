@@ -35,6 +35,7 @@ fi
 # 4. Install Homebrew packages (skip Gatekeeper quarantine on casks)
 echo "Installing Homebrew packages..."
 export HOMEBREW_CASK_OPTS="--no-quarantine"
+"$DOTFILES/local-tap.sh"
 brew bundle --file="$DOTFILES/Brewfile"
 
 # 5. Oh My Zsh
