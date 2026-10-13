@@ -68,7 +68,7 @@ fi
 
 # Muxy: terminal rendering in the Ghostty config it reads from Application Support
 if [ -f "$DOTFILES/configs/muxy/ghostty.conf" ]; then
-  MUXY_DIR="$HOME/Library/Application Support/Muxy"
+  MUXY_DIR="$HOME/Library/Application Support/Muxy 2"
   mkdir -p "$MUXY_DIR"
   ln -sfn "$DOTFILES/configs/muxy/ghostty.conf" "$MUXY_DIR/ghostty.conf"
 fi

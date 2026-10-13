@@ -149,6 +149,7 @@ Apply the same standard as the backend.
 - **Name/behaviour mismatch.** A test named for a condition it never exercises.
 - **Missing coverage** for exactly the paths Pass A flagged: the other credential type, the non-member/cross-tenant case, the error branch.
 - Repo test conventions: placement (e.g. cases before the `private` block, not after), factory usage, framework assertions over hand-rolled checks.
+- **Tests for one-off data migrations.** Tests for `db/data/*` migrations or `lib/data_ops` classes are unwanted, even if the repo already has some (e.g. `test/db/data/`). They run once and then rot. Flag the test file for removal. Verify the migration with a probe in Step 4 instead, such as a run against seeded or production-shaped data.
 
 ## Step 4: Verify by execution
 
