@@ -29,7 +29,6 @@ cd ~/Work/sandip-mane/dotfiles
 - [ ] **Add Work folder to Finder sidebar** — drag `~/Work` to Favorites
 - [ ] **Sync Bear notes** — run `bearin` to pull notes from GitHub into Bear; `bearout` to push the other way
 - [ ] **Install [NeetoRecord](https://neetorecord.com/neetorecord/download)**
-- [ ] **Local AI (high-memory Macs only)** — run `make local-ai` to install ollama and the local model behind `aic`
 - [ ] **Grafana MCP** — the `grafana-deploy` / `grafana-ci` entries in `.mcp.json` run `mcp/grafana` via Docker, read-only; their `GRAFANA_URL_*` / `GRAFANA_SAT_*` vars come from `refresh-secrets`
 
 </details>
@@ -93,19 +92,6 @@ Use [`aria2`](https://aria2.github.io/) to download a file over 16 parallel conn
 aria2c -x 16 -s 16 {LINK}
 ```
 
-### Local AI (`local-ai.sh`)
-
-Local models, kept out of `bootstrap.sh` and `sync.sh` because they need more
-memory than every Mac here has. Run it only on machines with enough RAM:
-
-```bash
-make local-ai
-```
-
-It installs `ollama`, starts its Homebrew service and pulls `gemma4:26b-mlx`,
-the model [`aic`](#shell-scripts-scripts) uses to draft a commit subject from
-the staged diff. Set `OLLAMA_COMMIT_MODEL` to use a different model for both.
-
 ### Shell Scripts (`scripts/`)
 
 Sourced automatically by `.zshrc`. Organized by domain:
@@ -118,7 +104,6 @@ Sourced automatically by `.zshrc`. Organized by domain:
 | `git/aireview.sh` | `aireview` | Start (or resume the existing) named Claude session running `/pr-review` on a PR URL |
 | `git/worklog.sh` | `worklog` | Print the `/work-log` output for a day (`today` default, `yesterday`, `YYYY-MM-DD`, or a range) |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
-| `git/aicommit.sh` | `aic` | Draft a commit message from the staged diff with a local Ollama model |
 | `git/move_project_items.sh` | `move_project_items` | Bulk move GitHub project items |
 | `git/project_columns.sh` | `create_project_column` / `move_project_column` / `set_project_column_color` / `create_next_milestone` / `deprecate_old_milestone` | Manage GitHub project Status columns |
 | `git/bump_version.sh` | `bump_version` | Trigger a version bump PR and merge it |
