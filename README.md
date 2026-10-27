@@ -102,6 +102,7 @@ Sourced automatically by `.zshrc`. Organized by domain:
 | `bear.sh` | `bearin` / `bearout` | Sync Bear notes (GitHub → Bear / Bear → GitHub) |
 | `git/sendpr.sh` | `sendpr` | Create PR with issue linking |
 | `git/aireview.sh` | `aireview` | Start (or resume the existing) named Claude session running `/pr-review` on a PR URL |
+| `git/aicheck.sh` | `aicheck` | Start (or resume the existing) named Claude session that investigates an issue URL, reviews its PR with `/pr-review` and lists missed cases |
 | `git/worklog.sh` | `worklog` | Print the `/work-log` output for a day (`today` default, `yesterday`, `YYYY-MM-DD`, or a range) |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
 | `git/gitclean.sh` | `gitclean` | Drop each worktree's Rails database, remove all worktrees, and delete every local branch except the current one |
