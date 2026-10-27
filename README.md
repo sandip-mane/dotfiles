@@ -104,6 +104,7 @@ Sourced automatically by `.zshrc`. Organized by domain:
 | `git/aireview.sh` | `aireview` | Start (or resume the existing) named Claude session running `/pr-review` on a PR URL |
 | `git/worklog.sh` | `worklog` | Print the `/work-log` output for a day (`today` default, `yesterday`, `YYYY-MM-DD`, or a range) |
 | `git/commitlog.sh` | `commitlog` | Formatted branch commit log |
+| `git/gitclean.sh` | `gitclean` | Drop each worktree's Rails database, remove all worktrees, and delete every local branch except the current one |
 | `git/move_project_items.sh` | `move_project_items` | Bulk move GitHub project items |
 | `git/project_columns.sh` | `create_project_column` / `move_project_column` / `set_project_column_color` / `create_next_milestone` / `deprecate_old_milestone` | Manage GitHub project Status columns |
 | `git/bump_version.sh` | `bump_version` | Trigger a version bump PR and merge it |

@@ -54,7 +54,6 @@ _nd_ensure_login() {
   tsh status &>/dev/null || tsh login --proxy=teleport.neetodeploy.com:443 --auth=github
 }
 nd() { _nd_ensure_login && neetodeploy "$@"; }
-alias gitclean="git branch | grep -v \* | xargs git branch -D"
 alias mec="ga . && git commit -m 'Minor enhancement' && ggpnp"
 export DOTFILES="${$(readlink -f ~/.zshrc):h:h:h}"
 alias dotsync="$DOTFILES/sync.sh"
