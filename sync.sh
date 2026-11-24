@@ -72,5 +72,6 @@ if [ -f "$DOTFILES/configs/muxy/ghostty.conf" ]; then
   mkdir -p "$MUXY_DIR"
   ln -sfn "$DOTFILES/configs/muxy/ghostty.conf" "$MUXY_DIR/ghostty.conf"
 fi
+"$DOTFILES/configs/muxy/keymap.sh"
 
 echo "Dotfiles synced."
