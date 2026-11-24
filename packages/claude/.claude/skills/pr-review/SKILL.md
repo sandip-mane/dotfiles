@@ -30,6 +30,8 @@ gh pr diff <N>
 
 If the body references an issue (`Fixes #NNNN`), read it. The stated intent is what you check completeness against — a PR titled "build API and CLI" that ships only the API half is a finding no amount of line-by-line reading will surface.
 
+If the body says the change depends on unmerged PRs in other repos (e.g. "Depends on neetozone/neeto-foo-nano#123"), read those diffs and **review the web PR as if they were merged and released**. Everyone knows the dependency gems still need releasing and bumping. So don't report a missing gem bump, failing tests or red CI caused by the pinned old version, or behaviour that only breaks on the old version. Before running probes, point the Gemfile at the dependency branch, or work out from the dependency's diff what the code would do. A finding counts only if it still holds once the dependencies land.
+
 Then **check out the branch into a worktree**. Never use `gh pr checkout` or `git checkout` in the user's repo. It may have uncommitted work, a running server, or a branch they're in the middle of.
 
 ```bash
@@ -97,6 +99,7 @@ The highest-value pass.
 - **Ignored return values.** A service invoked with no success/error check, where surrounding code checks it.
 - **Unguarded parsing.** `Date.parse`, `JSON.parse`, `Integer()`, `parseInt` on stored or user-supplied data — raises and 500s on bad input.
 - **Injection and secrets.** String-interpolated SQL, shell, or HTML built from user or record data; credentials or tokens committed; overly broad mass-assignment.
+- **Is the fix at the source of truth?** When a change corrects how stored data looks or behaves (unlinked URLs, bad formatting, wrong derived values, missing normalization), check *where* it applies. A transform at render time in one client, while the stored data stays wrong, has to be repeated in every other consumer: a mobile app, the API, emails, exports, search. The fix belongs where the data is written (backend before persist, or the shared library that produces it), with a backfill for existing rows. Ask "if a React Native app read this record tomorrow, would it be correct?" If not, it is **blocking**, even when the client-side code is clean and the demo works.
 
 ### Pass B — Reuse, simplification, and existing code
 
@@ -149,7 +152,7 @@ Apply the same standard as the backend.
 - **Name/behaviour mismatch.** A test named for a condition it never exercises.
 - **Missing coverage** for exactly the paths Pass A flagged: the other credential type, the non-member/cross-tenant case, the error branch.
 - Repo test conventions: placement (e.g. cases before the `private` block, not after), factory usage, framework assertions over hand-rolled checks.
-- **Tests for one-off data migrations.** Tests for `db/data/*` migrations or `lib/data_ops` classes are unwanted, even if the repo already has some (e.g. `test/db/data/`). They run once and then rot. Flag the test file for removal. Verify the migration with a probe in Step 4 instead, such as a run against seeded or production-shaped data.
+- **Tests for DB migrations.** Tests for schema migrations (`db/migrate/*`), data migrations (`db/data/*`) or `lib/data_ops` classes are unwanted, even if the repo already has some (e.g. `test/db/data/`, `test/db/migrate/`). They run once and then rot. Flag the test file for removal. Verify the migration with a probe in Step 4 instead, such as a run against seeded or production-shaped data.
 
 ## Step 4: Verify by execution
 
@@ -198,9 +201,11 @@ For frontend suspicions the equivalent is running the app or the relevant spec. 
 
 | Tier | Contains |
 |---|---|
-| **Blocking** | Verified crashes, authorization/data leaks, data loss, breaking API changes, missing scope from the linked issue. Each with executed evidence. |
+| **Blocking** | Verified crashes, authorization/data leaks, data loss, breaking API changes, missing scope from the linked issue, fixes applied in one client instead of at the source of truth. Each with executed evidence. |
 | **Conventions / cleanup** | Reuse misses, duplication, dead code, non-idiomatic implementation, response-shape concerns. |
 | **Tests** | Green-for-wrong-reason, narration comments, unused setup, missing coverage. |
+
+Pending releases of dependency PRs listed in the PR body are never findings, in any tier (see Step 1).
 
 Most-severe first within each tier. Three real findings beat fifteen nitpicks — if a pass produced nothing, say so rather than inventing something.
 
@@ -249,6 +254,7 @@ Rules for the write-up:
 - About to end the review, or give up on it, with the worktree or review database still around → Step 6.
 - Judging a class without having read its base class and mixins → read them.
 - Trusting an authorization helper without opening its body → open it.
+- Approving a fix because its output looks right, without asking whether it lives where the data is written → Pass A, source of truth.
 - Concluding "tests pass, so it works" → find the path the tests avoid.
 - Zero reuse findings in a change that adds a namespace parallel to an existing one → you have not compared them.
 
@@ -261,6 +267,7 @@ Rules for the write-up:
 | "CI is green" | Tests routinely dodge the broken path. That dodge is itself the finding. |
 | "It's obviously broken, I can see it" | Obvious-looking bugs are wrong often enough to matter. Run it. |
 | "The author probably had a reason" | Then the reason belongs in the code. Report it and let them answer. |
+| "It's only rendered in the web app, so a frontend fix is enough" | Every other consumer of the data still sees it broken. Fix it where it is written. |
 | "Checking sibling repos is overkill" | It is where the convention lives. It takes one `for` loop. |
 | "Frontend just needs a lint run" | Lint catches none of reusability, missing states, or accessibility. |
 | "I'll note it as a possible issue" | Verify it or label it a suspicion. Never blur the two. |
