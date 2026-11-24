@@ -1,5 +1,6 @@
 # Taps
 tap "neetozone/homebrew-tap"
+tap "omlahore/tap"
 tap "tunneltodev/tap"
 
 # CLI tools
@@ -15,6 +16,7 @@ brew "mole"
 brew "neetozone/homebrew-tap/neetodeploy"
 brew "node"
 brew "opensearch"
+brew "omlahore/tap/removemacai"
 brew "postgresql@18", restart_service: :changed
 brew "redis", restart_service: :changed
 brew "stow"

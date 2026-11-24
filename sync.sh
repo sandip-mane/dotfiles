@@ -74,4 +74,13 @@ if [ -f "$DOTFILES/configs/muxy/ghostty.conf" ]; then
 fi
 "$DOTFILES/configs/muxy/keymap.sh"
 
+# RemoveMacAI profile: macOS only installs profiles after approval in System Settings
+if [ -f "$DOTFILES/configs/removemacai/RemoveMacAI.mobileconfig" ] && \
+   [ ! -f "/Library/Managed Preferences/io.github.omlahore.removemacai.plist" ]; then
+  echo "Opening RemoveMacAI profile — approve it in System Settings → General → Device Management"
+  open "$DOTFILES/configs/removemacai/RemoveMacAI.mobileconfig"
+  sleep 1
+  open "x-apple.systempreferences:com.apple.Profiles-Settings.extension"
+fi
+
 echo "Dotfiles synced."

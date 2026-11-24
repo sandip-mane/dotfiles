@@ -28,6 +28,7 @@ cd ~/Work/sandip-mane/dotfiles
 - [ ] **Remap Caps Lock to Control** — System Settings → Keyboard → Keyboard Shortcuts → Modifier Keys
 - [ ] **Add Work folder to Finder sidebar** — drag `~/Work` to Favorites
 - [ ] **Sync Bear notes** — run `bearin` to pull notes from GitHub into Bear; `bearout` to push the other way
+- [ ] **Install the RemoveMacAI profile** — approve the profile bootstrap opened in System Settings → General → Device Management (or `open configs/removemacai/RemoveMacAI.mobileconfig`)
 - [ ] **Install [NeetoRecord](https://neetorecord.com/neetorecord/download)**
 - [ ] **Grafana MCP** — the `grafana-deploy` / `grafana-ci` entries in `.mcp.json` run `mcp/grafana` via Docker, read-only; their `GRAFANA_URL_*` / `GRAFANA_SAT_*` vars come from `refresh-secrets`
 
@@ -79,6 +80,7 @@ runtime-owned `autoMode` key, and runs from both `bootstrap.sh` and `sync.sh`.
 | Mac Mouse Fix  | `configs/mac-mouse-fix/config.plist`    |
 | iTerm2         | `configs/iterm2/Default.json`           |
 | Muxy           | `configs/muxy/ghostty.conf` — terminal rendering; `configs/muxy/keymap.toml` — shortcut overrides merged into `settings.toml` |
+| RemoveMacAI    | `configs/removemacai/RemoveMacAI.mobileconfig` — Apple Intelligence off, privacy tweaks |
 
 ### Packages & Apps
 
